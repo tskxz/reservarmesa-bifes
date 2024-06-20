@@ -7,6 +7,9 @@ mongo = PyMongo(app)
 login_manager = LoginManager()
 login_manager.init_app(app)
 
+class User(UserMixin):
+    pass
+
 # /ping - Verificar se está a funcionar
 @app.route("/ping")
 def ping():
