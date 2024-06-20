@@ -36,6 +36,12 @@ def logout_page():
         return 'Logged out'
     else:
         return "you aren't login"
+    
+@app.route('/protected_page')
+@login_required
+def protected_page():
+    return 'This is a protected page.'
+
 
 # /ping - Verificar se está a funcionar
 @app.route("/ping")
