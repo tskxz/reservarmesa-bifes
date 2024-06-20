@@ -1,0 +1,30 @@
+O objetivo é criar uma aplicação em que os clientes podem ter a possibilidade dereservar uma mesa de um restaurante chamado Bifes.
+
+O cliente deve fornecer os seguintes dados:
+	- Nome
+	- Quantidade de pessoas
+	- Data e Hora para a Reserva
+
+Essas são as mínimas informações que o cliente deve obter, porém, antes de efetuar uma reserva, deve se verificar se é possivel reservar uma mesa.
+Temos as seguintes entidades:
+Mesa(identificacao, quantidade_pessoas)
+Reserva(Cliente, Mesa, data_hora)
+
+Para verificar se a reserva está disponível, devemos primeiro preencher os dados da tabela Mesa. Exemplo:
+
+Mesa(1, 4)
+Mesa(2, 2)
+Mesa(3, 6)
+
+A Mesa deve ter uma coluna para verificar se está reservado ou não, por isso adicionei o seguinte atributo:
+
+Mesa(identificacao, quantidade_pessoas, reservado)
+
+O reservado deve ser um booleano, se estiver reservado, não se pode reservar essa mesa
+
+Quando o cliente pedir uma reserva, o administrador deve visualizar as reservas pendentes e ir aceitar ou recusar, com o resultado, o administrador deve mandar uma mensagem ao num de telemovel do cliente
+O resultado das entidades deve ser da seguinte forma para já:
+
+Mesa(identificacao, quantidade_pessoas, reservado)
+Cliente(nome, telemovel)
+Reserva(Cliente, Mesa, data_hora, aceitado)
