@@ -16,6 +16,19 @@ def user_loader(username):
     user.id = username
     return user
 
+@app.route('/login', methods=['GET', 'POST'])
+def login_page():
+    if request.method == 'POST':
+        username = request.form['username']
+        password = request.form['password']
+
+        # autenticar as credenciais
+        user = User()
+        user.id = username
+        login_user(user)
+        return redirect(url_for('protected_page'))
+    return render_template('login.html')
+
 # /ping - Verificar se está a funcionar
 @app.route("/ping")
 def ping():
