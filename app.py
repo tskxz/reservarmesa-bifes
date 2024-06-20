@@ -29,6 +29,14 @@ def login_page():
         return redirect(url_for('protected_page'))
     return render_template('login.html')
 
+@app.route('/logout')
+def logout_page():
+    if current_user.is_active:
+        logout_user()
+        return 'Logged out'
+    else:
+        return "you aren't login"
+
 # /ping - Verificar se está a funcionar
 @app.route("/ping")
 def ping():
