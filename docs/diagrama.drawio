@@ -1,4 +1,4 @@
-<mxfile host="app.diagrams.net" modified="2024-06-20T10:34:02.677Z" agent="Mozilla/5.0 (X11; Linux x86_64; rv:109.0) Gecko/20100101 Firefox/115.0" etag="uFMa8mXj03qzf5EJAJjk" version="24.4.13" type="device">
+<mxfile host="app.diagrams.net" modified="2024-06-20T10:37:06.555Z" agent="Mozilla/5.0 (X11; Linux x86_64; rv:109.0) Gecko/20100101 Firefox/115.0" etag="ZobIIJ4wNiEricnirD8U" version="24.4.13" type="device">
   <diagram name="Page-1" id="r9-HM__5Ni34Kxt1TRO8">
     <mxGraphModel dx="669" dy="608" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="850" pageHeight="1100" math="0" shadow="0">
       <root>
@@ -33,7 +33,7 @@
         <mxCell id="9IBz4StUfpka1d_MEgDK-44" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;entryX=0.5;entryY=0;entryDx=0;entryDy=0;" edge="1" parent="1" source="9IBz4StUfpka1d_MEgDK-10" target="9IBz4StUfpka1d_MEgDK-43">
           <mxGeometry relative="1" as="geometry" />
         </mxCell>
-        <mxCell id="9IBz4StUfpka1d_MEgDK-10" value="Clientes" style="rounded=0;whiteSpace=wrap;html=1;" vertex="1" parent="1">
+        <mxCell id="9IBz4StUfpka1d_MEgDK-10" value="Cliente" style="rounded=0;whiteSpace=wrap;html=1;" vertex="1" parent="1">
           <mxGeometry x="405" y="390" width="120" height="60" as="geometry" />
         </mxCell>
         <mxCell id="9IBz4StUfpka1d_MEgDK-13" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;entryX=0.5;entryY=0;entryDx=0;entryDy=0;" edge="1" parent="1" source="9IBz4StUfpka1d_MEgDK-11" target="9IBz4StUfpka1d_MEgDK-10">
@@ -66,7 +66,7 @@
         <mxCell id="9IBz4StUfpka1d_MEgDK-15" value="identificação" style="ellipse;whiteSpace=wrap;html=1;" vertex="1" parent="1">
           <mxGeometry x="120" y="260" width="80" height="60" as="geometry" />
         </mxCell>
-        <mxCell id="9IBz4StUfpka1d_MEgDK-17" value="Reservas" style="rounded=0;whiteSpace=wrap;html=1;" vertex="1" parent="1">
+        <mxCell id="9IBz4StUfpka1d_MEgDK-17" value="Reserva" style="rounded=0;whiteSpace=wrap;html=1;" vertex="1" parent="1">
           <mxGeometry x="405" y="560" width="120" height="60" as="geometry" />
         </mxCell>
         <mxCell id="9IBz4StUfpka1d_MEgDK-47" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;" edge="1" parent="1" source="9IBz4StUfpka1d_MEgDK-18" target="9IBz4StUfpka1d_MEgDK-17">
