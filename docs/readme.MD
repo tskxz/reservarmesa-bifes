@@ -33,4 +33,5 @@ Armazena informações sobre as reservas realizadas.
 - **Clientes**: Podem fazer reservas fornecendo nome, quantidade de pessoas, data e hora.
 - **Administradores**: Podem visualizar reservas pendentes e decidir se aceitam ou recusam, notificando os clientes através do número de telemóvel.
 
-Este documento descreve a estrutura das coleções e os campos relevantes necessários para implementar o sistema de reservas do restaurante Bifes.
+## Modelo ER
+![modeloer](diagrama.drawio.png)
