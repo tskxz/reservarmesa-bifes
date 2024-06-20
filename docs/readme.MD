@@ -32,3 +32,6 @@ Armazena informações sobre as reservas realizadas.
 
 - **Clientes**: Podem fazer reservas fornecendo nome, quantidade de pessoas, data e hora.
 - **Administradores**: Podem visualizar reservas pendentes e decidir se aceitam ou recusam, notificando os clientes através do número de telemóvel.
+
+## Modelo ER
+![modeloer](diagrama.drawio.png)
