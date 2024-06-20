@@ -69,4 +69,4 @@ Armazena informações sobre os funcionários que gerenciam as mesas.
 - **Funcionários**: Gerenciam as mesas atribuídas a eles.
 
 ## Modelo ER
-![modeloer](diagrama.drawio.png)
+![modeloer](ER_Restaurante.drawio.png)
