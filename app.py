@@ -10,6 +10,12 @@ login_manager.init_app(app)
 class User(UserMixin):
     pass
 
+@login_manager.user_loader
+def user_loader(username):
+    user = User()
+    user.id = username
+    return user
+
 # /ping - Verificar se está a funcionar
 @app.route("/ping")
 def ping():
