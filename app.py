@@ -3,6 +3,7 @@ from flask_pymongo import PyMongo
 from flask_login import LoginManager, UserMixin, login_user, current_user, login_required, logout_user
 
 app = Flask(__name__)
+app.config["MONGO_URI"] = "mongodb://localhost:27017/reservetablebifes"
 mongo = PyMongo(app)
 login_manager = LoginManager()
 login_manager.init_app(app)
