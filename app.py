@@ -1,6 +1,7 @@
-from flask import Flask, render_template, request, redirect, url_for
+from flask import Flask, render_template, request, redirect, url_for, flash
 from flask_pymongo import PyMongo
 from flask_login import LoginManager, UserMixin, login_user, current_user, login_required, logout_user
+from werkzeug.security import generate_password_hash, check_password_hash
 
 app = Flask(__name__)
 app.config["SECRET_KEY"] = "sh!"
@@ -8,15 +9,34 @@ app.config["MONGO_URI"] = "mongodb://localhost:27017/reservetablebifes"
 mongo = PyMongo(app)
 login_manager = LoginManager()
 login_manager.init_app(app)
+login_manager.login_view = 'login_page'  # Define a view de login padrão
 
 class User(UserMixin):
     pass
 
 @login_manager.user_loader
 def user_loader(username):
-    user = User()
-    user.id = username
-    return user
+    user_data = mongo.db.users.find_one({"username": username})
+    if user_data:
+        user = User()
+        user.id = username
+        return user
+    return None
+
+@app.route('/register', methods=['GET', 'POST'])
+def register_page():
+    if request.method == 'POST':
+        username = request.form['username']
+        password = request.form['password']
+        if mongo.db.users.find_one({"username": username}):
+            flash('Nome de utilizador já existe.')
+            return redirect(url_for('register_page'))
+
+        hashed_password = generate_password_hash(password)
+        mongo.db.users.insert_one({"username": username, "password": hashed_password})
+        flash('Utilizador registado com sucesso.')
+        return redirect(url_for('login_page'))
+    return render_template('register.html')
 
 @app.route('/login', methods=['GET', 'POST'])
 def login_page():
@@ -24,28 +44,34 @@ def login_page():
         username = request.form['username']
         password = request.form['password']
 
-        # autenticar as credenciais
-        user = User()
-        user.id = username
-        login_user(user)
-        return redirect(url_for('protected_page'))
+        user_data = mongo.db.users.find_one({"username": username})
+        if user_data and check_password_hash(user_data['password'], password): 
+            user = User()
+            user.id = username
+            login_user(user)
+            return redirect(url_for('protected_page'))
+        flash('Nome de utilizador ou palavra-passe inválida.')
     return render_template('login.html')
 
 @app.route('/logout')
 def logout_page():
     if current_user.is_active:
         logout_user()
-        return 'Logged out'
+        flash('Sessão terminada com sucesso.')
+        return redirect(url_for('login_page'))
     else:
-        return "you aren't login"
+        flash('Não está autenticado.')
+        return redirect(url_for('login_page'))
     
 @app.route('/protected_page')
 @login_required
 def protected_page():
-    return 'This is a protected page.'
-
+    return 'Esta é uma página protegida.'
 
 # /ping - Verificar se está a funcionar
 @app.route("/ping")
 def ping():
     return "Pong!"
+
+if __name__ == '__main__':
+    app.run(debug=True)
