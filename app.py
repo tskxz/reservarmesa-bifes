@@ -1,4 +1,4 @@
-from flask import Flask, render_template, request, redirect, url_for
+from flask import Flask, render_template, request, redirect, url_for, flash
 from flask_pymongo import PyMongo
 from flask_login import LoginManager, UserMixin, login_user, current_user, login_required, logout_user
 
@@ -8,15 +8,19 @@ app.config["MONGO_URI"] = "mongodb://localhost:27017/reservetablebifes"
 mongo = PyMongo(app)
 login_manager = LoginManager()
 login_manager.init_app(app)
+login_manager.login_view = 'login_page'  # Define a view de login padrão
 
 class User(UserMixin):
     pass
 
 @login_manager.user_loader
 def user_loader(username):
-    user = User()
-    user.id = username
-    return user
+    user_data = mongo.db.users.find_one({"username": username})
+    if user_data:
+        user = User()
+        user.id = username
+        return user
+    return None
 
 @app.route('/login', methods=['GET', 'POST'])
 def login_page():
