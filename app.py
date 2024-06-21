@@ -42,11 +42,13 @@ def login_page():
         username = request.form['username']
         password = request.form['password']
 
-        # autenticar as credenciais
-        user = User()
-        user.id = username
-        login_user(user)
-        return redirect(url_for('protected_page'))
+        user_data = mongo.db.users.find_one({"username": username})
+        if user_data and user_data['password'] == password:
+            user = User()
+            user.id = username
+            login_user(user)
+            return redirect(url_for('protected_page'))
+        flash('Invalid username or password.')
     return render_template('login.html')
 
 @app.route('/logout')
