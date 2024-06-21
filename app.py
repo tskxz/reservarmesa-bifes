@@ -22,6 +22,20 @@ def user_loader(username):
         return user
     return None
 
+@app.route('/register', methods=['GET', 'POST'])
+def register_page():
+    if request.method == 'POST':
+        username = request.form['username']
+        password = request.form['password']
+        if mongo.db.users.find_one({"username": username}):
+            flash('Username already exists.')
+            return redirect(url_for('register_page'))
+
+        mongo.db.users.insert_one({"username": username, "password": password})
+        flash('User registered successfully.')
+        return redirect(url_for('login_page'))
+    return render_template('register.html')
+
 @app.route('/login', methods=['GET', 'POST'])
 def login_page():
     if request.method == 'POST':
