@@ -69,3 +69,6 @@ def protected_page():
 @app.route("/ping")
 def ping():
     return "Pong!"
+
+if __name__ == '__main__':
+    app.run(debug=True)
