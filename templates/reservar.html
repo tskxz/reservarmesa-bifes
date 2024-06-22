@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html lang="pt">
+<head>
+    <meta charset="UTF-8">
+    <title>Fazer Reserva</title>
+</head>
+<body>
+    <h1>Fazer Reserva</h1>
+    {% for message in get_flashed_messages() %}
+        {{ message }}
+    {% endfor %}
+    <form method="post" action="{{ url_for('reservar_page') }}">
+        <label for="mesa_id">Mesa:</label>
+        <select name="mesa_id" id="mesa_id">
+            {% for mesa in mesas %}
+            <option value="{{ mesa._id }}">{{ mesa.identificacao }} - {{ mesa.quantidade_pessoas }} pessoas</option>
+            {% endfor %}
+        </select>
+        <br>
+        <label for="data_hora">Data e Hora:</label>
+        <input type="datetime-local" id="data_hora" name="data_hora" required>
+        <br>
+        <button type="submit">Reservar</button>
+    </form>
+</body>
+</html>
