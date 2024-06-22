@@ -68,7 +68,7 @@ def logout_page():
 @app.route('/protected_page')
 @login_required
 def protected_page():
-    return 'Esta é uma página protegida.'
+    return render_template('protected.html')
 
 @app.route('/reservar', methods=['GET', 'POST'])
 @login_required

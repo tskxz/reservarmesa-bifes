@@ -6,6 +6,9 @@
 </head>
 <body>
     <h1>Fazer Reserva</h1>
+    {% for message in get_flashed_messages() %}
+        {{ message }}
+    {% endfor %}
     <form method="post" action="{{ url_for('reservar_page') }}">
         <label for="mesa_id">Mesa:</label>
         <select name="mesa_id" id="mesa_id">
