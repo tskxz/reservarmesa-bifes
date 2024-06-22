@@ -2,6 +2,8 @@ from flask import Flask, render_template, request, redirect, url_for, flash
 from flask_pymongo import PyMongo
 from flask_login import LoginManager, UserMixin, login_user, current_user, login_required, logout_user
 from werkzeug.security import generate_password_hash, check_password_hash
+from bson.objectid import ObjectId
+from datetime import datetime
 
 app = Flask(__name__)
 app.config["SECRET_KEY"] = "sh!"
@@ -67,6 +69,36 @@ def logout_page():
 @login_required
 def protected_page():
     return 'Esta é uma página protegida.'
+
+@app.route('/reservar', methods=['GET', 'POST'])
+@login_required
+def reservar_page():
+    if request.method == 'POST':
+        mesa_id = request.form['mesa_id']
+        data_hora = request.form['data_hora']
+
+        # Formatar a data e hora
+        try:
+            data_hora_formatada = datetime.strptime(data_hora, '%Y-%m-%dT%H:%M')
+        except ValueError:
+            flash('Data e hora inválidas.')
+            return redirect(url_for('reservar_page'))
+
+        user_id = current_user.id
+
+        # Inserir reserva na base de dados
+        reserva = {
+            "user_id": mongo.db.users.find_one({"username": user_id})['_id'],
+            "mesa_id": ObjectId(mesa_id),
+            "data_hora": data_hora_formatada,
+            "aceitado": False
+        }
+        mongo.db.reservas.insert_one(reserva)
+        flash('Reserva feita com sucesso. Aguarde a confirmação.')
+        return redirect(url_for('protected_page'))
+
+    mesas = mongo.db.mesas.find({"reservado": 0})
+    return render_template('reservar.html', mesas=mesas)
 
 # /ping - Verificar se está a funcionar
 @app.route("/ping")
