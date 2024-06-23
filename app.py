@@ -166,9 +166,28 @@ def deletar_funcionario(funcionario_id):
     flash('Funcionário deletado com sucesso.')
     return redirect(url_for('funcionarios_page'))
 
-@app.route('/mesas', methods=['GET', 'POST'])
+@app.route('/mesas', methods=['GET'])
 @login_required
-def mesas_page():
+def exibir_mesas():
+    if current_user.role != 'admin':
+        flash('Acesso negado. Apenas administradores podem acessar esta página.')
+        return redirect(url_for('protected_page'))
+
+    # Obter todas as mesas e funcionários para exibir no template
+    mesas = mongo.db.mesas.find()
+    funcionarios = mongo.db.funcionarios.find()
+
+    # Criar um dicionário para mapear o _id do funcionário para o nome
+    funcionarios_map = {funcionario['_id']: funcionario['nome'] for funcionario in funcionarios}
+
+    # Renderizar o template 'exibir_mesas.html' passando mesas e o dicionário de funcionários
+    return render_template('exibir_mesas.html', mesas=mesas, funcionarios_map=funcionarios_map)
+
+
+
+@app.route('/mesas/criar', methods=['GET', 'POST'])
+@login_required
+def criar_mesa():
     if current_user.role != 'admin':
         flash('Acesso negado. Apenas administradores podem acessar esta página.')
         return redirect(url_for('protected_page'))
@@ -177,20 +196,21 @@ def mesas_page():
         identificacao = request.form['identificacao']
         quantidade_pessoas = request.form['quantidade_pessoas']
         reservado = bool(request.form.get('reservado', False))
-        funcionario_id = request.form['funcionario_id']  # Certifique-se de que este campo está definido
+        funcionario_id = request.form['funcionario_id']
 
-        # Verifique se todos os campos necessários estão definidos
+        # Verificar se todos os campos necessários estão definidos
         if not identificacao or not quantidade_pessoas or not funcionario_id:
             flash('Por favor, preencha todos os campos obrigatórios.')
-            return redirect(url_for('mesas_page'))
+            return redirect(url_for('criar_mesa'))
 
         try:
             identificacao = int(identificacao)
             quantidade_pessoas = int(quantidade_pessoas)
         except ValueError:
             flash('Identificação e quantidade de pessoas devem ser números inteiros.')
-            return redirect(url_for('mesas_page'))
+            return redirect(url_for('criar_mesa'))
 
+        # Inserir nova mesa no MongoDB
         mongo.db.mesas.insert_one({
             "identificacao": identificacao,
             "quantidade_pessoas": quantidade_pessoas,
@@ -198,15 +218,12 @@ def mesas_page():
             "funcionario_id": ObjectId(funcionario_id)
         })
         flash('Mesa adicionada com sucesso.')
-        return redirect(url_for('mesas_page'))
+        return redirect(url_for('exibir_mesas'))
 
-    # Obtenha todas as mesas e funcionários para exibir no template
-    mesas = mongo.db.mesas.find()
+    # Se não for um método POST, simplesmente renderize o template 'criar_mesa.html'
     funcionarios = mongo.db.funcionarios.find()
-    
+    return render_template('criar_mesa.html', funcionarios=funcionarios)
 
-    # Renderize o template 'mesas.html' passando mesas e funcionarios como contextos
-    return render_template('mesas.html', mesas=mesas, funcionarios=funcionarios)
 
 @app.route('/editar_mesa/<mesa_id>', methods=['GET', 'POST'])
 @login_required
@@ -232,7 +249,8 @@ def editar_mesa(mesa_id):
             }}
         )
         flash('Mesa atualizada com sucesso.')
-        return redirect(url_for('mesas_page'))
+        return redirect(url_for('exibir_mesas'))
+
 
     funcionarios = mongo.db.funcionarios.find()
     return render_template('editar_mesa.html', mesa=mesa, funcionarios=funcionarios)
@@ -246,7 +264,8 @@ def deletar_mesa(mesa_id):
 
     mongo.db.mesas.delete_one({"_id": ObjectId(mesa_id)})
     flash('Mesa deletada com sucesso.')
-    return redirect(url_for('mesas_page'))
+    return redirect(url_for('exibir_mesas'))
+
 
 # /ping - Verificar se está a funcionar
 @app.route("/ping")
