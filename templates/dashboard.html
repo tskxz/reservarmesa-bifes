@@ -8,5 +8,7 @@
     <h1>Dashboard do Administrador</h1>
     <p>Bem-vindo, {{ current_user.id }}.</p>
     <a href="{{ url_for('logout_page') }}">Logout</a>
+    <br>
+    <a href="{{ url_for('funcionarios_page') }}">Gerenciar Funcionários</a>
 </body>
 </html>
