@@ -134,6 +134,38 @@ def adicionar_funcionario():
     flash('Funcionário adicionado com sucesso.')
     return redirect(url_for('funcionarios_page'))
 
+@app.route('/editar_funcionario/<funcionario_id>', methods=['GET', 'POST'])
+@login_required
+def editar_funcionario(funcionario_id):
+    if current_user.role != 'admin':
+        flash('Acesso negado. Apenas administradores podem acessar esta página.')
+        return redirect(url_for('protected_page'))
+
+    funcionario = mongo.db.funcionarios.find_one({"_id": ObjectId(funcionario_id)})
+
+    if request.method == 'POST':
+        nome = request.form['nome']
+        telemovel = request.form['telemovel']
+        mongo.db.funcionarios.update_one(
+            {"_id": ObjectId(funcionario_id)},
+            {"$set": {"nome": nome, "telemovel": telemovel}}
+        )
+        flash('Funcionário atualizado com sucesso.')
+        return redirect(url_for('funcionarios_page'))
+
+    return render_template('editar_funcionario.html', funcionario=funcionario)
+
+@app.route('/deletar_funcionario/<funcionario_id>')
+@login_required
+def deletar_funcionario(funcionario_id):
+    if current_user.role != 'admin':
+        flash('Acesso negado. Apenas administradores podem acessar esta página.')
+        return redirect(url_for('protected_page'))
+
+    mongo.db.funcionarios.delete_one({"_id": ObjectId(funcionario_id)})
+    flash('Funcionário deletado com sucesso.')
+    return redirect(url_for('funcionarios_page'))
+
 
 # /ping - Verificar se está a funcionar
 @app.route("/ping")
