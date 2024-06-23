@@ -108,13 +108,174 @@ def reservar_page():
         flash('Reserva feita com sucesso. Aguarde a confirmação.')
         return redirect(url_for('protected_page'))
 
-    mesas = mongo.db.mesas.find({"reservado": 0})
+    mesas = mongo.db.mesas.find({"reservado": False})
     return render_template('reservar.html', mesas=mesas)
+
+@app.route('/funcionarios')
+@login_required
+def funcionarios_page():
+    if current_user.role != 'admin':
+        flash('Acesso negado. Apenas administradores podem acessar esta página.')
+        return redirect(url_for('protected_page'))
+
+    funcionarios = mongo.db.funcionarios.find()
+    return render_template('funcionarios.html', funcionarios=funcionarios)
+
+@app.route('/adicionar_funcionario', methods=['POST'])
+@login_required
+def adicionar_funcionario():
+    if current_user.role != 'admin':
+        flash('Acesso negado. Apenas administradores podem acessar esta página.')
+        return redirect(url_for('protected_page'))
+
+    nome = request.form['nome']
+    telemovel = request.form['telemovel']
+    mongo.db.funcionarios.insert_one({"nome": nome, "telemovel": telemovel})
+    flash('Funcionário adicionado com sucesso.')
+    return redirect(url_for('funcionarios_page'))
+
+@app.route('/editar_funcionario/<funcionario_id>', methods=['GET', 'POST'])
+@login_required
+def editar_funcionario(funcionario_id):
+    if current_user.role != 'admin':
+        flash('Acesso negado. Apenas administradores podem acessar esta página.')
+        return redirect(url_for('protected_page'))
+
+    funcionario = mongo.db.funcionarios.find_one({"_id": ObjectId(funcionario_id)})
+
+    if request.method == 'POST':
+        nome = request.form['nome']
+        telemovel = request.form['telemovel']
+        mongo.db.funcionarios.update_one(
+            {"_id": ObjectId(funcionario_id)},
+            {"$set": {"nome": nome, "telemovel": telemovel}}
+        )
+        flash('Funcionário atualizado com sucesso.')
+        return redirect(url_for('funcionarios_page'))
+
+    return render_template('editar_funcionario.html', funcionario=funcionario)
+
+@app.route('/deletar_funcionario/<funcionario_id>')
+@login_required
+def deletar_funcionario(funcionario_id):
+    if current_user.role != 'admin':
+        flash('Acesso negado. Apenas administradores podem acessar esta página.')
+        return redirect(url_for('protected_page'))
+
+    mongo.db.funcionarios.delete_one({"_id": ObjectId(funcionario_id)})
+    flash('Funcionário deletado com sucesso.')
+    return redirect(url_for('funcionarios_page'))
+
+@app.route('/mesas', methods=['GET'])
+@login_required
+def exibir_mesas():
+    if current_user.role != 'admin':
+        flash('Acesso negado. Apenas administradores podem acessar esta página.')
+        return redirect(url_for('protected_page'))
+
+    # Obter todas as mesas e funcionários para exibir no template
+    mesas = mongo.db.mesas.find()
+    funcionarios = mongo.db.funcionarios.find()
+
+    # Criar um dicionário para mapear o _id do funcionário para o nome
+    funcionarios_map = {funcionario['_id']: funcionario['nome'] for funcionario in funcionarios}
+
+    # Renderizar o template 'exibir_mesas.html' passando mesas e o dicionário de funcionários
+    return render_template('exibir_mesas.html', mesas=mesas, funcionarios_map=funcionarios_map)
+
+
+
+@app.route('/mesas/criar', methods=['GET', 'POST'])
+@login_required
+def criar_mesa():
+    if current_user.role != 'admin':
+        flash('Acesso negado. Apenas administradores podem acessar esta página.')
+        return redirect(url_for('protected_page'))
+
+    if request.method == 'POST':
+        identificacao = request.form['identificacao']
+        quantidade_pessoas = request.form['quantidade_pessoas']
+        reservado = bool(request.form.get('reservado', False))
+        funcionario_id = request.form['funcionario_id']
+
+        # Verificar se todos os campos necessários estão definidos
+        if not identificacao or not quantidade_pessoas or not funcionario_id:
+            flash('Por favor, preencha todos os campos obrigatórios.')
+            return redirect(url_for('criar_mesa'))
+
+        try:
+            identificacao = int(identificacao)
+            quantidade_pessoas = int(quantidade_pessoas)
+        except ValueError:
+            flash('Identificação e quantidade de pessoas devem ser números inteiros.')
+            return redirect(url_for('criar_mesa'))
+
+        # Inserir nova mesa no MongoDB
+        mongo.db.mesas.insert_one({
+            "identificacao": identificacao,
+            "quantidade_pessoas": quantidade_pessoas,
+            "reservado": reservado,
+            "funcionario_id": ObjectId(funcionario_id)
+        })
+        flash('Mesa adicionada com sucesso.')
+        return redirect(url_for('exibir_mesas'))
+
+    # Se não for um método POST, simplesmente renderize o template 'criar_mesa.html'
+    funcionarios = mongo.db.funcionarios.find()
+    return render_template('criar_mesa.html', funcionarios=funcionarios)
+
+
+@app.route('/editar_mesa/<mesa_id>', methods=['GET', 'POST'])
+@login_required
+def editar_mesa(mesa_id):
+    if current_user.role != 'admin':
+        flash('Acesso negado. Apenas administradores podem acessar esta página.')
+        return redirect(url_for('protected_page'))
+
+    mesa = mongo.db.mesas.find_one({"_id": ObjectId(mesa_id)})
+
+    if request.method == 'POST':
+        identificacao = request.form['identificacao']
+        quantidade_pessoas = request.form['quantidade_pessoas']
+        reservado = bool(request.form.get('reservado', False))
+        funcionario_id = request.form['funcionario_id']
+        mongo.db.mesas.update_one(
+            {"_id": ObjectId(mesa_id)},
+            {"$set": {
+                "identificacao": int(identificacao),
+                "quantidade_pessoas": int(quantidade_pessoas),
+                "reservado": reservado,
+                "funcionario_id": ObjectId(funcionario_id)
+            }}
+        )
+        flash('Mesa atualizada com sucesso.')
+        return redirect(url_for('exibir_mesas'))
+
+
+    funcionarios = mongo.db.funcionarios.find()
+    return render_template('editar_mesa.html', mesa=mesa, funcionarios=funcionarios)
+
+@app.route('/deletar_mesa/<mesa_id>')
+@login_required
+def deletar_mesa(mesa_id):
+    if current_user.role != 'admin':
+        flash('Acesso negado. Apenas administradores podem acessar esta página.')
+        return redirect(url_for('protected_page'))
+
+    mongo.db.mesas.delete_one({"_id": ObjectId(mesa_id)})
+    flash('Mesa deletada com sucesso.')
+    return redirect(url_for('exibir_mesas'))
+
 
 # /ping - Verificar se está a funcionar
 @app.route("/ping")
 def ping():
     return "Pong!"
+
+@app.route("/")
+@login_required
+def home():
+    return render_template('home.html')
 
 if __name__ == '__main__':
     app.run(debug=True)

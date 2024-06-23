@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html lang="pt">
+<head>
+    <meta charset="UTF-8">
+    <title>Criar Mesa</title>
+</head>
+<body>
+    <h1>Criar Nova Mesa</h1>
+    <form action="{{ url_for('criar_mesa') }}" method="post">
+        <label for="identificacao">Identificação:</label>
+        <input type="number" id="identificacao" name="identificacao" required>
+        <br>
+        <label for="quantidade_pessoas">Quantidade de Pessoas:</label>
+        <input type="number" id="quantidade_pessoas" name="quantidade_pessoas" required>
+        <br>
+        <label for="reservado">Reservado:</label>
+        <input type="checkbox" id="reservado" name="reservado">
+        <br>
+        <label for="funcionario_id">Funcionário Responsável:</label>
+        <select id="funcionario_id" name="funcionario_id" required>
+            {% for funcionario in funcionarios %}
+                <option value="{{ funcionario._id }}">{{ funcionario.nome }}</option>
+            {% endfor %}
+        </select>
+        <br>
+        <button type="submit">Adicionar Mesa</button>
+    </form>
+    <a href="{{ url_for('exibir_mesas') }}">Voltar para Lista de Mesas</a>
+</body>
+</html>

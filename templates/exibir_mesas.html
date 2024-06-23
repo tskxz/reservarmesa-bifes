@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html lang="pt">
+<head>
+    <meta charset="UTF-8">
+    <title>Visualizar Mesas</title>
+</head>
+<body>
+    <h1>Mesas Cadastradas</h1>
+    <a href="{{ url_for('dashboard_page') }}">Voltar ao Dashboard</a>
+    <br><br>
+    <h2>Lista de Mesas</h2>
+    <ul>
+        {% for mesa in mesas %}
+            <li>
+                Identificação: {{ mesa.identificacao }} - Quantidade de Pessoas: {{ mesa.quantidade_pessoas }} - Reservado: {% if mesa.reservado %} Sim {% else %} Não {% endif %} - Funcionário Responsável: {{ funcionarios_map[mesa.funcionario_id] }}
+                <a href="{{ url_for('editar_mesa', mesa_id=mesa._id) }}">Editar</a>
+                <a href="{{ url_for('deletar_mesa', mesa_id=mesa._id) }}">Deletar</a>
+            </li>
+        {% endfor %}
+    </ul>
+    <br>
+    <a href="{{ url_for('criar_mesa') }}">Adicionar Nova Mesa</a>
+</body>
+</html>
