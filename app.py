@@ -108,7 +108,7 @@ def reservar_page():
         flash('Reserva feita com sucesso. Aguarde a confirmação.')
         return redirect(url_for('protected_page'))
 
-    mesas = mongo.db.mesas.find({"reservado": 0})
+    mesas = mongo.db.mesas.find({"reservado": False})
     return render_template('reservar.html', mesas=mesas)
 
 @app.route('/funcionarios')
@@ -271,6 +271,11 @@ def deletar_mesa(mesa_id):
 @app.route("/ping")
 def ping():
     return "Pong!"
+
+@app.route("/")
+@login_required
+def home():
+    return render_template('home.html')
 
 if __name__ == '__main__':
     app.run(debug=True)
