@@ -121,6 +121,19 @@ def funcionarios_page():
     funcionarios = mongo.db.funcionarios.find()
     return render_template('funcionarios.html', funcionarios=funcionarios)
 
+@app.route('/adicionar_funcionario', methods=['POST'])
+@login_required
+def adicionar_funcionario():
+    if current_user.role != 'admin':
+        flash('Acesso negado. Apenas administradores podem acessar esta página.')
+        return redirect(url_for('protected_page'))
+
+    nome = request.form['nome']
+    telemovel = request.form['telemovel']
+    mongo.db.funcionarios.insert_one({"nome": nome, "telemovel": telemovel})
+    flash('Funcionário adicionado com sucesso.')
+    return redirect(url_for('funcionarios_page'))
+
 
 # /ping - Verificar se está a funcionar
 @app.route("/ping")
