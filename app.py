@@ -14,15 +14,15 @@ login_manager.init_app(app)
 login_manager.login_view = 'login_page'  # Define a view de login padrão
 
 class User(UserMixin):
-    pass
+    def __init__(self, username, role):
+        self.id = username
+        self.role = role
 
 @login_manager.user_loader
 def user_loader(username):
     user_data = mongo.db.users.find_one({"username": username})
     if user_data:
-        user = User()
-        user.id = username
-        return user
+        return User(username=user_data['username'], role=user_data['role'])
     return None
 
 @app.route('/register', methods=['GET', 'POST'])
@@ -30,12 +30,14 @@ def register_page():
     if request.method == 'POST':
         username = request.form['username']
         password = request.form['password']
+        # Definir a role padrão como 'user'
+        role = 'user'
         if mongo.db.users.find_one({"username": username}):
             flash('Nome de utilizador já existe.')
             return redirect(url_for('register_page'))
 
         hashed_password = generate_password_hash(password)
-        mongo.db.users.insert_one({"username": username, "password": hashed_password})
+        mongo.db.users.insert_one({"username": username, "password": hashed_password, "role": role})
         flash('Utilizador registado com sucesso.')
         return redirect(url_for('login_page'))
     return render_template('register.html')
@@ -48,9 +50,10 @@ def login_page():
 
         user_data = mongo.db.users.find_one({"username": username})
         if user_data and check_password_hash(user_data['password'], password): 
-            user = User()
-            user.id = username
+            user = User(username=user_data['username'], role=user_data['role'])
             login_user(user)
+            if user.role == 'admin':
+                return redirect(url_for('dashboard_page'))
             return redirect(url_for('protected_page'))
         flash('Nome de utilizador ou palavra-passe inválida.')
     return render_template('login.html')
@@ -69,6 +72,14 @@ def logout_page():
 @login_required
 def protected_page():
     return render_template('protected.html')
+
+@app.route('/dashboard')
+@login_required
+def dashboard_page():
+    if current_user.role != 'admin':
+        flash('Acesso negado. Apenas administradores podem acessar esta página.')
+        return redirect(url_for('protected_page'))
+    return render_template('dashboard.html')
 
 @app.route('/reservar', methods=['GET', 'POST'])
 @login_required
