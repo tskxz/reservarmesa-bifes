@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="pt">
+<head>
+    <meta charset="UTF-8">
+    <title>Gerenciamento de Mesas</title>
+</head>
+<body>
+    <h1>Gerenciamento de Mesas</h1>
+    <a href="{{ url_for('dashboard_page') }}">Voltar ao Dashboard</a>
+    <h2>Adicionar Mesa</h2>
+    <form action="{{ url_for('mesas_page') }}" method="post">
+        <label for="identificacao">Identificação:</label>
+        <input type="number" id="identificacao" name="identificacao" required>
+        <br>
+        <label for="quantidade_pessoas">Quantidade de Pessoas:</label>
+        <input type="number" id="quantidade_pessoas" name="quantidade_pessoas" required>
+        <br>
+        <label for="reservado">Reservado:</label>
+        <input type="checkbox" id="reservado" name="reservado">
+        <br>
+        <label for="funcionario_id">Funcionário Responsável:</label>
+        <select id="funcionario_id" name="funcionario_id" required>
+            {% for funcionario in funcionarios %}
+                <option value="{{ funcionario._id }}">{{ funcionario.nome }}</option>
+            {% endfor %}
+        </select>
+        <br>
+        <button type="submit">Adicionar</button>
+    </form>
+    <h2>Mesas Existentes</h2>
+    <ul>
+        {% for mesa in mesas %}
+            <li>
+                Identificação: {{ mesa.identificacao }} - Quantidade de Pessoas: {{ mesa.quantidade_pessoas }} - Reservado: {{ mesa.reservado }} - Funcionário: 
+                {% for funcionario in funcionarios %}
+                    {% if funcionario._id == mesa.funcionario_id %}
+                        {{ funcionario.nome }}
+                    {% endif %}
+                {% endfor %}
+                <a href="{{ url_for('editar_mesa', mesa_id=mesa._id) }}">Editar</a>
+                <a href="{{ url_for('deletar_mesa', mesa_id=mesa._id) }}">Deletar</a>
+            </li>
+        {% endfor %}
+    </ul>
+</body>
+</html>

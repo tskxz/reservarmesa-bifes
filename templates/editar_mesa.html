@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html lang="pt">
+<head>
+    <meta charset="UTF-8">
+    <title>Editar Mesa</title>
+</head>
+<body>
+    <h1>Editar Mesa</h1>
+    <form action="{{ url_for('editar_mesa', mesa_id=mesa._id) }}" method="post">
+        <label for="identificacao">Identificação:</label>
+        <input type="number" id="identificacao" name="identificacao" value="{{ mesa.identificacao }}" required>
+        <br>
+        <label for="quantidade_pessoas">Quantidade de Pessoas:</label>
+        <input type="number" id="quantidade_pessoas" name="quantidade_pessoas" value="{{ mesa.quantidade_pessoas }}" required>
+        <br>
+        <label for="reservado">Reservado:</label>
+        <input type="checkbox" id="reservado" name="reservado" {% if mesa.reservado %}checked{% endif %}>
+        <br>
+        <label for="funcionario_id">Funcionário Responsável:</label>
+        <select id="funcionario_id" name="funcionario_id" required>
+            {% for funcionario in funcionarios %}
+                <option value="{{ funcionario._id }}" {% if funcionario._id == mesa.funcionario_id %}selected{% endif %}>{{ funcionario.nome }}</option>
+            {% endfor %}
+        </select>
+        <br>
+        <button type="submit">Atualizar</button>
+    </form>
+    <a href="{{ url_for('mesas_page') }}">Voltar</a>
+</body>
+</html>
