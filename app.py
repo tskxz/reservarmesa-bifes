@@ -111,6 +111,17 @@ def reservar_page():
     mesas = mongo.db.mesas.find({"reservado": 0})
     return render_template('reservar.html', mesas=mesas)
 
+@app.route('/funcionarios')
+@login_required
+def funcionarios_page():
+    if current_user.role != 'admin':
+        flash('Acesso negado. Apenas administradores podem acessar esta página.')
+        return redirect(url_for('protected_page'))
+
+    funcionarios = mongo.db.funcionarios.find()
+    return render_template('funcionarios.html', funcionarios=funcionarios)
+
+
 # /ping - Verificar se está a funcionar
 @app.route("/ping")
 def ping():
