@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html lang="pt">
+<head>
+    <meta charset="UTF-8">
+    <title>CRUD de Funcionários</title>
+</head>
+<body>
+    <h1>Gerenciamento de Funcionários</h1>
+    <a href="{{ url_for('dashboard_page') }}">Voltar ao Dashboard</a>
+    <h2>Adicionar Funcionário</h2>
+    <form action="{{ url_for('adicionar_funcionario') }}" method="post">
+        <label for="nome">Nome:</label>
+        <input type="text" id="nome" name="nome" required>
+        <br>
+        <label for="telemovel">Telemóvel:</label>
+        <input type="text" id="telemovel" name="telemovel" required>
+        <br>
+        <button type="submit">Adicionar</button>
+    </form>
+    <h2>Funcionários Existentes</h2>
+    <ul>
+        {% for funcionario in funcionarios %}
+            <li>
+                {{ funcionario.nome }} - {{ funcionario.telemovel }}
+                <a href="{{ url_for('editar_funcionario', funcionario_id=funcionario._id) }}">Editar</a>
+                <a href="{{ url_for('deletar_funcionario', funcionario_id=funcionario._id) }}">Deletar</a>
+            </li>
+        {% endfor %}
+    </ul>
+</body>
+</html>
