@@ -266,6 +266,221 @@ def deletar_mesa(mesa_id):
     flash('Mesa deletada com sucesso.')
     return redirect(url_for('exibir_mesas'))
 
+@app.route('/menus')
+@login_required
+def listar_menus():
+    if current_user.role != 'admin':
+        flash('Acesso negado. Apenas administradores podem acessar esta página.')
+        return redirect(url_for('protected_page'))
+
+    menus = mongo.db.menus.find()
+    return render_template('listar_menus.html', menus=menus)
+
+@app.route('/menus/criar', methods=['GET', 'POST'])
+@login_required
+def criar_menu():
+    if current_user.role != 'admin':
+        flash('Acesso negado. Apenas administradores podem acessar esta página.')
+        return redirect(url_for('protected_page'))
+
+    if request.method == 'POST':
+        nome = request.form['nome']
+        descricao = request.form['descricao']
+
+        if not nome:
+            flash('Por favor, preencha todos os campos obrigatórios.')
+            return redirect(url_for('criar_menu'))
+
+
+        mongo.db.menus.insert_one({
+            "nome": nome,
+            "descricao": descricao,
+        })
+        flash('Menu adicionado com sucesso.')
+        return redirect(url_for('listar_menus'))
+
+    return render_template('criar_menu.html')
+
+@app.route('/menus/editar/<menu_id>', methods=['GET', 'POST'])
+@login_required
+def editar_menu(menu_id):
+    if current_user.role != 'admin':
+        flash('Acesso negado. Apenas administradores podem acessar esta página.')
+        return redirect(url_for('protected_page'))
+
+    menu = mongo.db.menus.find_one({"_id": ObjectId(menu_id)})
+
+    if request.method == 'POST':
+        nome = request.form['nome']
+        descricao = request.form['descricao']
+
+        mongo.db.menus.update_one(
+            {"_id": ObjectId(menu_id)},
+            {"$set": {
+                "nome": nome,
+                "descricao": descricao,
+            }}
+        )
+        flash('Menu atualizado com sucesso.')
+        return redirect(url_for('listar_menus'))
+
+    return render_template('editar_menu.html', menu=menu)
+
+@app.route('/menus/deletar/<menu_id>')
+@login_required
+def deletar_menu(menu_id):
+    if current_user.role != 'admin':
+        flash('Acesso negado. Apenas administradores podem acessar esta página.')
+        return redirect(url_for('protected_page'))
+
+    mongo.db.menus.delete_one({"_id": ObjectId(menu_id)})
+    flash('Menu deletado com sucesso.')
+    return redirect(url_for('listar_menus'))
+
+@app.route('/menus/<menu_id>/pratos', methods=['GET'])
+@login_required
+def listar_pratos(menu_id):
+    if current_user.role != 'admin':
+        flash('Acesso negado. Apenas administradores podem acessar esta página.')
+        return redirect(url_for('protected_page'))
+
+    menu = mongo.db.menus.find_one({"_id": ObjectId(menu_id)})
+    if not menu:
+        flash('Menu não encontrado.')
+        return redirect(url_for('listar_menus'))
+
+    pratos = mongo.db.pratos.find({"menu_id": ObjectId(menu_id)})
+    return render_template('listar_pratos.html', menu=menu, pratos=pratos)
+
+@app.route('/menus/<menu_id>/pratos/criar', methods=['GET', 'POST'])
+@login_required
+def criar_prato(menu_id):
+    if current_user.role != 'admin':
+        flash('Acesso negado. Apenas administradores podem acessar esta página.')
+        return redirect(url_for('protected_page'))
+
+    if request.method == 'POST':
+        nome = request.form['nome']
+        descricao = request.form['descricao']
+        preco = float(request.form['preco'])  # Converter para float (ou decimal, dependendo da precisão necessária)
+
+        if not nome or not descricao or not preco:
+            flash('Por favor, preencha todos os campos obrigatórios.')
+            return redirect(url_for('criar_prato', menu_id=menu_id))
+
+        prato = {
+            "menu_id": ObjectId(menu_id),
+            "nome": nome,
+            "descricao": descricao,
+            "preco": preco  # Adicionando o campo preço
+        }
+        mongo.db.pratos.insert_one(prato)
+        flash('Prato adicionado com sucesso.')
+        return redirect(url_for('listar_pratos', menu_id=menu_id))
+
+    return render_template('criar_prato.html', menu_id=menu_id)
+
+@app.route('/pratos/<prato_id>/editar', methods=['GET', 'POST'])
+@login_required
+def editar_prato(prato_id):
+    if current_user.role != 'admin':
+        flash('Acesso negado. Apenas administradores podem acessar esta página.')
+        return redirect(url_for('protected_page'))
+
+    prato = mongo.db.pratos.find_one({"_id": ObjectId(prato_id)})
+    if not prato:
+        flash('Prato não encontrado.')
+        return redirect(url_for('listar_menus'))
+
+    if request.method == 'POST':
+        nome = request.form['nome']
+        descricao = request.form['descricao']
+        preco = float(request.form['preco'])  # Converter para float (ou decimal, dependendo da precisão necessária)
+
+        if not nome or not descricao or not preco:
+            flash('Por favor, preencha todos os campos obrigatórios.')
+            return redirect(url_for('editar_prato', prato_id=prato_id))
+
+        mongo.db.pratos.update_one(
+            {"_id": ObjectId(prato_id)},
+            {"$set": {"nome": nome, "descricao": descricao, "preco": preco}}
+        )
+        flash('Prato atualizado com sucesso.')
+        return redirect(url_for('listar_pratos', menu_id=prato['menu_id']))
+
+    return render_template('editar_prato.html', prato=prato)
+
+@app.route('/pratos/<prato_id>/deletar')
+@login_required
+def deletar_prato(prato_id):
+    if current_user.role != 'admin':
+        flash('Acesso negado. Apenas administradores podem acessar esta página.')
+        return redirect(url_for('protected_page'))
+
+    prato = mongo.db.pratos.find_one({"_id": ObjectId(prato_id)})
+    if not prato:
+        flash('Prato não encontrado.')
+        return redirect(url_for('listar_menus'))
+
+    mongo.db.pratos.delete_one({"_id": ObjectId(prato_id)})
+    flash('Prato deletado com sucesso.')
+    return redirect(url_for('listar_pratos', menu_id=prato['menu_id']))
+
+@app.route('/reservas', methods=['GET'])
+@login_required
+def exibir_reservas():
+    if current_user.role != 'admin':
+        flash('Acesso negado. Apenas administradores podem acessar esta página.')
+        return redirect(url_for('protected_page'))
+
+    # Obter todas as mesas e funcionários para exibir no template
+    reservas = mongo.db.reservas.find()
+    users = mongo.db.users.find()
+    mesas = mongo.db.mesas.find()
+    users_map = {user['_id']: {'username': user['username'],} for user in users}
+    mesas_map = {mesa['_id']: {'identificacao': mesa['identificacao'], 'quantidade_pessoas': mesa['quantidade_pessoas']} for mesa in mesas}
+    # funcionarios = mongo.db.funcionarios.find()
+
+    # Criar um dicionário para mapear o _id do funcionário para o nome
+    #funcionarios_map = {funcionario['_id']: funcionario['nome'] for funcionario in funcionarios}
+
+    # Renderizar o template 'exibir_mesas.html' passando mesas e o dicionário de funcionários
+    return render_template('exibir_reservas.html', reservas=reservas, users_map=users_map, mesas_map=mesas_map)
+
+@app.route('/deletar_reserva/<reserva_id>')
+@login_required
+def deletar_reserva(reserva_id):
+    if current_user.role != 'admin':
+        flash('Acesso negado. Apenas administradores podem acessar esta página.')
+        return redirect(url_for('protected_page'))
+
+    reserva = mongo.db.reservas.find_one({"_id": ObjectId(reserva_id)})
+    if not reserva:
+        flash('Reserva não encontrada.')
+        return redirect(url_for('exibir_reservas'))
+
+    mongo.db.reservas.delete_one({"_id": ObjectId(reserva_id)})
+    flash('Reserva deletada com sucesso.')
+    return redirect(url_for('exibir_reservas'))
+
+@app.route('/aceitar_reserva/<reserva_id>')
+@login_required
+def aceitar_reserva(reserva_id):
+    if current_user.role != 'admin':
+        flash('Acesso negado. Apenas administradores podem acessar esta página.')
+        return redirect(url_for('protected_page'))
+
+    reserva = mongo.db.reservas.find_one({"_id": ObjectId(reserva_id)})
+    if not reserva:
+        flash('Reserva não encontrada.')
+        return redirect(url_for('exibir_reservas'))
+
+    mongo.db.reservas.update_one(
+        {"_id": ObjectId(reserva_id)},
+        {"$set": {"aceitado": True}}
+    )
+    flash('Reserva aceita com sucesso.')
+    return redirect(url_for('exibir_reservas'))
 
 # /ping - Verificar se está a funcionar
 @app.route("/ping")
