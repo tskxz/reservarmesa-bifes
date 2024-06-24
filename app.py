@@ -362,15 +362,17 @@ def criar_prato(menu_id):
     if request.method == 'POST':
         nome = request.form['nome']
         descricao = request.form['descricao']
+        preco = float(request.form['preco'])  # Converter para float (ou decimal, dependendo da precisão necessária)
 
-        if not nome or not descricao:
+        if not nome or not descricao or not preco:
             flash('Por favor, preencha todos os campos obrigatórios.')
             return redirect(url_for('criar_prato', menu_id=menu_id))
 
         prato = {
             "menu_id": ObjectId(menu_id),
             "nome": nome,
-            "descricao": descricao
+            "descricao": descricao,
+            "preco": preco  # Adicionando o campo preço
         }
         mongo.db.pratos.insert_one(prato)
         flash('Prato adicionado com sucesso.')
@@ -393,14 +395,15 @@ def editar_prato(prato_id):
     if request.method == 'POST':
         nome = request.form['nome']
         descricao = request.form['descricao']
+        preco = float(request.form['preco'])  # Converter para float (ou decimal, dependendo da precisão necessária)
 
-        if not nome or not descricao:
+        if not nome or not descricao or not preco:
             flash('Por favor, preencha todos os campos obrigatórios.')
             return redirect(url_for('editar_prato', prato_id=prato_id))
 
         mongo.db.pratos.update_one(
             {"_id": ObjectId(prato_id)},
-            {"$set": {"nome": nome, "descricao": descricao}}
+            {"$set": {"nome": nome, "descricao": descricao, "preco": preco}}
         )
         flash('Prato atualizado com sucesso.')
         return redirect(url_for('listar_pratos', menu_id=prato['menu_id']))
