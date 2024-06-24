@@ -438,7 +438,7 @@ def exibir_reservas():
     users = mongo.db.users.find()
     mesas = mongo.db.mesas.find()
     users_map = {user['_id']: user['username'] for user in users}
-    mesas_map = {mesa['_id']: mesa['identificacao'] for mesa in mesas}
+    mesas_map = {mesa['_id']: {'identificacao': mesa['identificacao'], 'quantidade_pessoas': mesa['quantidade_pessoas']} for mesa in mesas}
     # funcionarios = mongo.db.funcionarios.find()
 
     # Criar um dicionário para mapear o _id do funcionário para o nome
