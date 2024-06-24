@@ -266,6 +266,15 @@ def deletar_mesa(mesa_id):
     flash('Mesa deletada com sucesso.')
     return redirect(url_for('exibir_mesas'))
 
+@app.route('/menus')
+@login_required
+def listar_menus():
+    if current_user.role != 'admin':
+        flash('Acesso negado. Apenas administradores podem acessar esta página.')
+        return redirect(url_for('protected_page'))
+
+    menus = mongo.db.menus.find()
+    return render_template('listar_menus.html', menus=menus)
 
 # /ping - Verificar se está a funcionar
 @app.route("/ping")
