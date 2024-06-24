@@ -408,6 +408,21 @@ def editar_prato(prato_id):
 
     return render_template('editar_prato.html', prato=prato)
 
+@app.route('/pratos/<prato_id>/deletar')
+@login_required
+def deletar_prato(prato_id):
+    if current_user.role != 'admin':
+        flash('Acesso negado. Apenas administradores podem acessar esta página.')
+        return redirect(url_for('protected_page'))
+
+    prato = mongo.db.pratos.find_one({"_id": ObjectId(prato_id)})
+    if not prato:
+        flash('Prato não encontrado.')
+        return redirect(url_for('listar_menus'))
+
+    mongo.db.pratos.delete_one({"_id": ObjectId(prato_id)})
+    flash('Prato deletado com sucesso.')
+    return redirect(url_for('listar_pratos', menu_id=prato['menu_id']))
 
 # /ping - Verificar se está a funcionar
 @app.route("/ping")
