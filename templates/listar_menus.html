@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html lang="pt">
+<head>
+    <meta charset="UTF-8">
+    <title>Visualizar Menus</title>
+</head>
+<body>
+    <h1>Menus Cadastrados</h1>
+    <a href="{{ url_for('dashboard_page') }}">Voltar ao Dashboard</a>
+    <br><br>
+    <h2>Lista de Menus</h2>
+    <ul>
+        {% for menu in menus %}
+            <li>
+                Nome: {{ menu.nome }} - Descrição: {{ menu.descricao }} - Preço: {{ menu.preco }}
+                <a href="{{ url_for('editar_menu', menu_id=menu._id) }}">Editar</a>
+                <a href="{{ url_for('deletar_menu', menu_id=menu._id) }}">Deletar</a>
+            </li>
+        {% endfor %}
+    </ul>
+    <br>
+    <a href="{{ url_for('criar_menu') }}">Adicionar Novo Menu</a>
+</body>
+</html>
