@@ -447,6 +447,22 @@ def exibir_reservas():
     # Renderizar o template 'exibir_mesas.html' passando mesas e o dicionário de funcionários
     return render_template('exibir_reservas.html', reservas=reservas, users_map=users_map, mesas_map=mesas_map)
 
+@app.route('/deletar_reserva/<reserva_id>')
+@login_required
+def deletar_reserva(reserva_id):
+    if current_user.role != 'admin':
+        flash('Acesso negado. Apenas administradores podem acessar esta página.')
+        return redirect(url_for('protected_page'))
+
+    reserva = mongo.db.reservas.find_one({"_id": ObjectId(reserva_id)})
+    if not reserva:
+        flash('Reserva não encontrada.')
+        return redirect(url_for('exibir_reservas'))
+
+    mongo.db.reservas.delete_one({"_id": ObjectId(reserva_id)})
+    flash('Reserva deletada com sucesso.')
+    return redirect(url_for('exibir_reservas'))
+
 # /ping - Verificar se está a funcionar
 @app.route("/ping")
 def ping():
