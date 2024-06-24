@@ -12,7 +12,7 @@
     <ul>
         {% for prato in pratos %}
             <li>
-                Nome: {{ prato.nome }} - Descrição: {{ prato.descricao }} - Preço: R$ {{ prato.preco }}
+                Nome: {{ prato.nome }} - Descrição: {{ prato.descricao }} - Preço: EU€ {{ prato.preco }}
                 <a href="{{ url_for('editar_prato', prato_id=prato._id) }}">Editar</a>
                 <a href="{{ url_for('deletar_prato', prato_id=prato._id) }}">Deletar</a>
             </li>
