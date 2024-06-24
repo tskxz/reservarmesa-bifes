@@ -1,0 +1,20 @@
+<!DOCTYPE html>
+<html lang="pt">
+<head>
+    <meta charset="UTF-8">
+    <title>Editar Prato</title>
+</head>
+<body>
+    <h1>Editar Prato</h1>
+    <form action="{{ url_for('editar_prato', prato_id=prato._id) }}" method="post">
+        <label for="nome">Nome:</label>
+        <input type="text" id="nome" name="nome" value="{{ prato.nome }}" required>
+        <br>
+        <label for="descricao">Descrição:</label>
+        <textarea id="descricao" name="descricao" required>{{ prato.descricao }}</textarea>
+        <br>
+        <button type="submit">Atualizar</button>
+    </form>
+    <a href="{{ url_for('listar_pratos', menu_id=prato.menu_id) }}">Voltar</a>
+</body>
+</html>
