@@ -345,6 +345,16 @@ def editar_menu(menu_id):
 
     return render_template('editar_menu.html', menu=menu)
 
+@app.route('/menus/deletar/<menu_id>')
+@login_required
+def deletar_menu(menu_id):
+    if current_user.role != 'admin':
+        flash('Acesso negado. Apenas administradores podem acessar esta página.')
+        return redirect(url_for('protected_page'))
+
+    mongo.db.menus.delete_one({"_id": ObjectId(menu_id)})
+    flash('Menu deletado com sucesso.')
+    return redirect(url_for('listar_menus'))
 
 # /ping - Verificar se está a funcionar
 @app.route("/ping")
