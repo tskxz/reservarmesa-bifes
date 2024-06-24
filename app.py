@@ -426,6 +426,62 @@ def deletar_prato(prato_id):
     flash('Prato deletado com sucesso.')
     return redirect(url_for('listar_pratos', menu_id=prato['menu_id']))
 
+@app.route('/reservas', methods=['GET'])
+@login_required
+def exibir_reservas():
+    if current_user.role != 'admin':
+        flash('Acesso negado. Apenas administradores podem acessar esta página.')
+        return redirect(url_for('protected_page'))
+
+    # Obter todas as mesas e funcionários para exibir no template
+    reservas = mongo.db.reservas.find()
+    users = mongo.db.users.find()
+    mesas = mongo.db.mesas.find()
+    users_map = {user['_id']: {'username': user['username'],} for user in users}
+    mesas_map = {mesa['_id']: {'identificacao': mesa['identificacao'], 'quantidade_pessoas': mesa['quantidade_pessoas']} for mesa in mesas}
+    # funcionarios = mongo.db.funcionarios.find()
+
+    # Criar um dicionário para mapear o _id do funcionário para o nome
+    #funcionarios_map = {funcionario['_id']: funcionario['nome'] for funcionario in funcionarios}
+
+    # Renderizar o template 'exibir_mesas.html' passando mesas e o dicionário de funcionários
+    return render_template('exibir_reservas.html', reservas=reservas, users_map=users_map, mesas_map=mesas_map)
+
+@app.route('/deletar_reserva/<reserva_id>')
+@login_required
+def deletar_reserva(reserva_id):
+    if current_user.role != 'admin':
+        flash('Acesso negado. Apenas administradores podem acessar esta página.')
+        return redirect(url_for('protected_page'))
+
+    reserva = mongo.db.reservas.find_one({"_id": ObjectId(reserva_id)})
+    if not reserva:
+        flash('Reserva não encontrada.')
+        return redirect(url_for('exibir_reservas'))
+
+    mongo.db.reservas.delete_one({"_id": ObjectId(reserva_id)})
+    flash('Reserva deletada com sucesso.')
+    return redirect(url_for('exibir_reservas'))
+
+@app.route('/aceitar_reserva/<reserva_id>')
+@login_required
+def aceitar_reserva(reserva_id):
+    if current_user.role != 'admin':
+        flash('Acesso negado. Apenas administradores podem acessar esta página.')
+        return redirect(url_for('protected_page'))
+
+    reserva = mongo.db.reservas.find_one({"_id": ObjectId(reserva_id)})
+    if not reserva:
+        flash('Reserva não encontrada.')
+        return redirect(url_for('exibir_reservas'))
+
+    mongo.db.reservas.update_one(
+        {"_id": ObjectId(reserva_id)},
+        {"$set": {"aceitado": True}}
+    )
+    flash('Reserva aceita com sucesso.')
+    return redirect(url_for('exibir_reservas'))
+
 # /ping - Verificar se está a funcionar
 @app.route("/ping")
 def ping():
