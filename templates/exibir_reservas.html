@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html lang="pt">
+<head>
+    <meta charset="UTF-8">
+    <title>Visualizar Reservas</title>
+</head>
+<body>
+    <h1>Reservas</h1>
+    <a href="{{ url_for('dashboard_page') }}">Voltar ao Dashboard</a>
+    <br><br>
+    <h2>Lista de reservas</h2>
+    <ul>
+        {% for reserva in reservas %}
+            <li>
+                Data e Hora: {{ reserva.data_hora }} - Cliente: {{ users_map[reserva.user_id] }} - Aceitado: {% if reserva.aceitado %} Sim {% else %} Não {% endif %} - Mesa: {{ mesas_map[reserva.mesa_id] }}
+                
+            </li>
+        {% endfor %}
+    </ul>
+    <br>
+    
+</body>
+</html>
