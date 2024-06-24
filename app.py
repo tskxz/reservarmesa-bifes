@@ -352,6 +352,33 @@ def listar_pratos(menu_id):
     pratos = mongo.db.pratos.find({"menu_id": ObjectId(menu_id)})
     return render_template('listar_pratos.html', menu=menu, pratos=pratos)
 
+@app.route('/menus/<menu_id>/pratos/criar', methods=['GET', 'POST'])
+@login_required
+def criar_prato(menu_id):
+    if current_user.role != 'admin':
+        flash('Acesso negado. Apenas administradores podem acessar esta página.')
+        return redirect(url_for('protected_page'))
+
+    if request.method == 'POST':
+        nome = request.form['nome']
+        descricao = request.form['descricao']
+        
+        if not nome or not descricao:
+            flash('Por favor, preencha todos os campos obrigatórios.')
+            return redirect(url_for('criar_prato', menu_id=menu_id))
+
+        prato = {
+            "menu_id": ObjectId(menu_id),
+            "nome": nome,
+            "descricao": descricao
+        }
+        mongo.db.pratos.insert_one(prato)
+        flash('Prato adicionado com sucesso.')
+        return redirect(url_for('listar_pratos', menu_id=menu_id))
+
+    return render_template('criar_prato.html', menu_id=menu_id)
+
+
 # /ping - Verificar se está a funcionar
 @app.route("/ping")
 def ping():
