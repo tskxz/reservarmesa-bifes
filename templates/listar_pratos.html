@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html lang="pt">
+<head>
+    <meta charset="UTF-8">
+    <title>Pratos do Menu {{ menu.nome }}</title>
+</head>
+<body>
+    <h1>Pratos do Menu {{ menu.nome }}</h1>
+    <a href="{{ url_for('listar_menus') }}">Voltar aos Menus</a>
+    <br><br>
+    <ul>
+        {% for prato in pratos %}
+            <li>
+                Nome: {{ prato.nome }} - Descrição: {{ prato.descricao }}
+                <a href="{{ url_for('editar_prato', prato_id=prato._id) }}">Editar</a>
+                <a href="{{ url_for('deletar_prato', prato_id=prato._id) }}">Deletar</a>
+            </li>
+        {% endfor %}
+    </ul>
+    <br>
+    <a href="{{ url_for('criar_prato', menu_id=menu._id) }}">Adicionar Novo Prato</a>
+</body>
+</html>
