@@ -12,7 +12,7 @@
     <ul>
         {% for menu in menus %}
             <li>
-                Nome: {{ menu.nome }} - Descrição: {{ menu.descricao }} - Preço: {{ menu.preco }}
+                Nome: {{ menu.nome }} - Descrição: {{ menu.descricao }}
                 <a href="{{ url_for('editar_menu', menu_id=menu._id) }}">Editar</a>
                 <a href="{{ url_for('deletar_menu', menu_id=menu._id) }}">Deletar</a>
             </li>

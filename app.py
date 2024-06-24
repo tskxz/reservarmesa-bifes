@@ -286,22 +286,15 @@ def criar_menu():
     if request.method == 'POST':
         nome = request.form['nome']
         descricao = request.form['descricao']
-        preco = request.form['preco']
 
-        if not nome or not preco:
+        if not nome:
             flash('Por favor, preencha todos os campos obrigatórios.')
             return redirect(url_for('criar_menu'))
 
-        try:
-            preco = float(preco)
-        except ValueError:
-            flash('Preço deve ser um número.')
-            return redirect(url_for('criar_menu'))
 
         mongo.db.menus.insert_one({
             "nome": nome,
             "descricao": descricao,
-            "preco": preco
         })
         flash('Menu adicionado com sucesso.')
         return redirect(url_for('listar_menus'))
@@ -320,24 +313,12 @@ def editar_menu(menu_id):
     if request.method == 'POST':
         nome = request.form['nome']
         descricao = request.form['descricao']
-        preco = request.form['preco']
-
-        if not nome or not preco:
-            flash('Por favor, preencha todos os campos obrigatórios.')
-            return redirect(url_for('editar_menu', menu_id=menu_id))
-
-        try:
-            preco = float(preco)
-        except ValueError:
-            flash('Preço deve ser um número.')
-            return redirect(url_for('editar_menu', menu_id=menu_id))
 
         mongo.db.menus.update_one(
             {"_id": ObjectId(menu_id)},
             {"$set": {
                 "nome": nome,
                 "descricao": descricao,
-                "preco": preco
             }}
         )
         flash('Menu atualizado com sucesso.')
