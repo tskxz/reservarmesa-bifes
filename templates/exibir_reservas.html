@@ -13,6 +13,7 @@
         {% for reserva in reservas %}
             <li>
                 Data e Hora: {{ reserva.data_hora }} - Cliente: {{ users_map[reserva.user_id] }} - Aceitado: {% if reserva.aceitado %} Sim {% else %} Não {% endif %} - Mesa: {{ mesas_map[reserva.mesa_id]['identificacao'] }} - Quantidade de Pessoas: {{ mesas_map[reserva.mesa_id]['quantidade_pessoas'] }}
+                <a href="{{ url_for('aceitar_reserva', reserva_id=reserva._id) }}">Aceitar</a>
                 <a href="{{ url_for('deletar_reserva', reserva_id=reserva._id) }}">Deletar</a>
             </li>
         {% endfor %}

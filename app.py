@@ -463,6 +463,25 @@ def deletar_reserva(reserva_id):
     flash('Reserva deletada com sucesso.')
     return redirect(url_for('exibir_reservas'))
 
+@app.route('/aceitar_reserva/<reserva_id>')
+@login_required
+def aceitar_reserva(reserva_id):
+    if current_user.role != 'admin':
+        flash('Acesso negado. Apenas administradores podem acessar esta página.')
+        return redirect(url_for('protected_page'))
+
+    reserva = mongo.db.reservas.find_one({"_id": ObjectId(reserva_id)})
+    if not reserva:
+        flash('Reserva não encontrada.')
+        return redirect(url_for('exibir_reservas'))
+
+    mongo.db.reservas.update_one(
+        {"_id": ObjectId(reserva_id)},
+        {"$set": {"aceitado": True}}
+    )
+    flash('Reserva aceita com sucesso.')
+    return redirect(url_for('exibir_reservas'))
+
 # /ping - Verificar se está a funcionar
 @app.route("/ping")
 def ping():
