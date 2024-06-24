@@ -337,6 +337,21 @@ def deletar_menu(menu_id):
     flash('Menu deletado com sucesso.')
     return redirect(url_for('listar_menus'))
 
+@app.route('/menus/<menu_id>/pratos', methods=['GET'])
+@login_required
+def listar_pratos(menu_id):
+    if current_user.role != 'admin':
+        flash('Acesso negado. Apenas administradores podem acessar esta página.')
+        return redirect(url_for('protected_page'))
+
+    menu = mongo.db.menus.find_one({"_id": ObjectId(menu_id)})
+    if not menu:
+        flash('Menu não encontrado.')
+        return redirect(url_for('listar_menus'))
+
+    pratos = mongo.db.pratos.find({"menu_id": ObjectId(menu_id)})
+    return render_template('listar_pratos.html', menu=menu, pratos=pratos)
+
 # /ping - Verificar se está a funcionar
 @app.route("/ping")
 def ping():
