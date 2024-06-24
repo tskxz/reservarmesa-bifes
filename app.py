@@ -29,6 +29,7 @@ def user_loader(username):
 def register_page():
     if request.method == 'POST':
         username = request.form['username']
+        telemovel = request.form['telemovel']
         password = request.form['password']
         # Definir a role padrão como 'user'
         role = 'user'
@@ -37,7 +38,7 @@ def register_page():
             return redirect(url_for('register_page'))
 
         hashed_password = generate_password_hash(password)
-        mongo.db.users.insert_one({"username": username, "password": hashed_password, "role": role})
+        mongo.db.users.insert_one({"username": username, "telemovel":telemovel, "password": hashed_password, "role": role})
         flash('Utilizador registado com sucesso.')
         return redirect(url_for('login_page'))
     return render_template('register.html')
