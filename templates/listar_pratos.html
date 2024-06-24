@@ -1,13 +1,16 @@
+<!-- listar_pratos.html -->
+
 <!DOCTYPE html>
 <html lang="pt">
 <head>
     <meta charset="UTF-8">
-    <title>Pratos do Menu {{ menu.nome }}</title>
+    <title>Lista de Pratos</title>
 </head>
 <body>
-    <h1>Pratos do Menu {{ menu.nome }}</h1>
-    <a href="{{ url_for('listar_menus') }}">Voltar aos Menus</a>
+    <h1>Pratos do Menu: {{ menu.nome }}</h1>
+    <a href="{{ url_for('listar_menus') }}">Voltar para Listagem de Menus</a>
     <br><br>
+    <h2>Lista de Pratos</h2>
     <ul>
         {% for prato in pratos %}
             <li>

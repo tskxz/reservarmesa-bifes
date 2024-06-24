@@ -362,7 +362,7 @@ def criar_prato(menu_id):
     if request.method == 'POST':
         nome = request.form['nome']
         descricao = request.form['descricao']
-        
+
         if not nome or not descricao:
             flash('Por favor, preencha todos os campos obrigatórios.')
             return redirect(url_for('criar_prato', menu_id=menu_id))
@@ -377,7 +377,6 @@ def criar_prato(menu_id):
         return redirect(url_for('listar_pratos', menu_id=menu_id))
 
     return render_template('criar_prato.html', menu_id=menu_id)
-
 
 @app.route('/pratos/<prato_id>/editar', methods=['GET', 'POST'])
 @login_required

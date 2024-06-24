@@ -1,20 +1,21 @@
+<!-- criar_prato.html -->
+
 <!DOCTYPE html>
 <html lang="pt">
 <head>
     <meta charset="UTF-8">
-    <title>Adicionar Prato</title>
+    <title>Criar Prato</title>
 </head>
 <body>
-    <h1>Adicionar Prato</h1>
-    <form action="{{ url_for('criar_prato', menu_id=menu_id) }}" method="post">
-        <label for="nome">Nome:</label>
-        <input type="text" id="nome" name="nome" required>
-        <br>
-        <label for="descricao">Descrição:</label>
-        <textarea id="descricao" name="descricao" required></textarea>
-        <br>
-        <button type="submit">Adicionar</button>
+    <h1>Criar Novo Prato</h1>
+    <form method="POST">
+        <label for="nome">Nome do Prato:</label><br>
+        <input type="text" id="nome" name="nome" required><br><br>
+        <label for="descricao">Descrição:</label><br>
+        <textarea id="descricao" name="descricao" rows="4" cols="50" required></textarea><br><br>
+        <button type="submit">Criar Prato</button>
     </form>
-    <a href="{{ url_for('listar_pratos', menu_id=menu_id) }}">Voltar</a>
+    <br>
+    <a href="{{ url_for('listar_pratos', menu_id=menu_id) }}">Cancelar</a>
 </body>
 </html>
