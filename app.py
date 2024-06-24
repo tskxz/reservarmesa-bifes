@@ -308,6 +308,43 @@ def criar_menu():
 
     return render_template('criar_menu.html')
 
+@app.route('/menus/editar/<menu_id>', methods=['GET', 'POST'])
+@login_required
+def editar_menu(menu_id):
+    if current_user.role != 'admin':
+        flash('Acesso negado. Apenas administradores podem acessar esta página.')
+        return redirect(url_for('protected_page'))
+
+    menu = mongo.db.menus.find_one({"_id": ObjectId(menu_id)})
+
+    if request.method == 'POST':
+        nome = request.form['nome']
+        descricao = request.form['descricao']
+        preco = request.form['preco']
+
+        if not nome or not preco:
+            flash('Por favor, preencha todos os campos obrigatórios.')
+            return redirect(url_for('editar_menu', menu_id=menu_id))
+
+        try:
+            preco = float(preco)
+        except ValueError:
+            flash('Preço deve ser um número.')
+            return redirect(url_for('editar_menu', menu_id=menu_id))
+
+        mongo.db.menus.update_one(
+            {"_id": ObjectId(menu_id)},
+            {"$set": {
+                "nome": nome,
+                "descricao": descricao,
+                "preco": preco
+            }}
+        )
+        flash('Menu atualizado com sucesso.')
+        return redirect(url_for('listar_menus'))
+
+    return render_template('editar_menu.html', menu=menu)
+
 
 # /ping - Verificar se está a funcionar
 @app.route("/ping")
