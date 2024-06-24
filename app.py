@@ -379,6 +379,36 @@ def criar_prato(menu_id):
     return render_template('criar_prato.html', menu_id=menu_id)
 
 
+@app.route('/pratos/<prato_id>/editar', methods=['GET', 'POST'])
+@login_required
+def editar_prato(prato_id):
+    if current_user.role != 'admin':
+        flash('Acesso negado. Apenas administradores podem acessar esta página.')
+        return redirect(url_for('protected_page'))
+
+    prato = mongo.db.pratos.find_one({"_id": ObjectId(prato_id)})
+    if not prato:
+        flash('Prato não encontrado.')
+        return redirect(url_for('listar_menus'))
+
+    if request.method == 'POST':
+        nome = request.form['nome']
+        descricao = request.form['descricao']
+
+        if not nome or not descricao:
+            flash('Por favor, preencha todos os campos obrigatórios.')
+            return redirect(url_for('editar_prato', prato_id=prato_id))
+
+        mongo.db.pratos.update_one(
+            {"_id": ObjectId(prato_id)},
+            {"$set": {"nome": nome, "descricao": descricao}}
+        )
+        flash('Prato atualizado com sucesso.')
+        return redirect(url_for('listar_pratos', menu_id=prato['menu_id']))
+
+    return render_template('editar_prato.html', prato=prato)
+
+
 # /ping - Verificar se está a funcionar
 @app.route("/ping")
 def ping():
