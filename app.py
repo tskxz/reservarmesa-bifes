@@ -480,6 +480,12 @@ def aceitar_reserva(reserva_id):
         {"_id": ObjectId(reserva_id)},
         {"$set": {"aceitado": True}}
     )
+
+    mongo.db.mesas.update_one(
+        {"_id": reserva["mesa_id"]},
+        {"$set": {"reservado": True}}
+    )
+    
     flash('Reserva aceita com sucesso.')
     return redirect(url_for('exibir_reservas'))
 
