@@ -461,6 +461,11 @@ def deletar_reserva(reserva_id):
         return redirect(url_for('exibir_reservas'))
 
     mongo.db.reservas.delete_one({"_id": ObjectId(reserva_id)})
+    
+    mongo.db.mesas.update_one(
+        {"_id": reserva["mesa_id"]},
+        {"$set": {"reservado": False}}
+    )
     flash('Reserva deletada com sucesso.')
     return redirect(url_for('exibir_reservas'))
 
@@ -485,7 +490,7 @@ def aceitar_reserva(reserva_id):
         {"_id": reserva["mesa_id"]},
         {"$set": {"reservado": True}}
     )
-    
+
     flash('Reserva aceita com sucesso.')
     return redirect(url_for('exibir_reservas'))
 
