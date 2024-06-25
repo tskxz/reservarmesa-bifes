@@ -29,6 +29,7 @@ def user_loader(username):
 def register_page():
     if request.method == 'POST':
         username = request.form['username']
+        telemovel = request.form['telemovel']
         password = request.form['password']
         # Definir a role padrão como 'user'
         role = 'user'
@@ -37,7 +38,7 @@ def register_page():
             return redirect(url_for('register_page'))
 
         hashed_password = generate_password_hash(password)
-        mongo.db.users.insert_one({"username": username, "password": hashed_password, "role": role})
+        mongo.db.users.insert_one({"username": username, "telemovel":telemovel, "password": hashed_password, "role": role})
         flash('Utilizador registado com sucesso.')
         return redirect(url_for('login_page'))
     return render_template('register.html')
@@ -437,7 +438,7 @@ def exibir_reservas():
     reservas = mongo.db.reservas.find()
     users = mongo.db.users.find()
     mesas = mongo.db.mesas.find()
-    users_map = {user['_id']: {'username': user['username'],} for user in users}
+    users_map = {user['_id']: {'username': user['username'], 'telemovel': user['telemovel']} for user in users}
     mesas_map = {mesa['_id']: {'identificacao': mesa['identificacao'], 'quantidade_pessoas': mesa['quantidade_pessoas']} for mesa in mesas}
     # funcionarios = mongo.db.funcionarios.find()
 
@@ -460,6 +461,11 @@ def deletar_reserva(reserva_id):
         return redirect(url_for('exibir_reservas'))
 
     mongo.db.reservas.delete_one({"_id": ObjectId(reserva_id)})
+    
+    mongo.db.mesas.update_one(
+        {"_id": reserva["mesa_id"]},
+        {"$set": {"reservado": False}}
+    )
     flash('Reserva deletada com sucesso.')
     return redirect(url_for('exibir_reservas'))
 
@@ -479,6 +485,12 @@ def aceitar_reserva(reserva_id):
         {"_id": ObjectId(reserva_id)},
         {"$set": {"aceitado": True}}
     )
+
+    mongo.db.mesas.update_one(
+        {"_id": reserva["mesa_id"]},
+        {"$set": {"reservado": True}}
+    )
+
     flash('Reserva aceita com sucesso.')
     return redirect(url_for('exibir_reservas'))
 
