@@ -507,6 +507,8 @@ def home():
     mesas = mongo.db.mesas.find()
     mesas_map = {mesa['_id']: {'identificacao': mesa['identificacao'], 'quantidade_pessoas': mesa['quantidade_pessoas']} for mesa in mesas}
     reservas_pendentes = mongo.db.reservas.find({"user_id": user_id, "aceitado": False})
+    reservas_aceites = mongo.db.reservas.find({"user_id": user_id, "aceitado": True})
+
     return render_template('home.html', reservas_pendentes=reservas_pendentes, reservas_aceites=reservas_aceites, user=user, mesas_map=mesas_map)
 
 
