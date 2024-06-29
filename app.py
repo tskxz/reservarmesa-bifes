@@ -502,7 +502,13 @@ def ping():
 @app.route("/")
 @login_required
 def home():
-    return render_template('home.html')
+    user = mongo.db.users.find_one({"username": current_user.id})
+    user_id = user['_id']
+    mesas = mongo.db.mesas.find()
+    mesas_map = {mesa['_id']: {'identificacao': mesa['identificacao'], 'quantidade_pessoas': mesa['quantidade_pessoas']} for mesa in mesas}
+    reservas_pendentes = mongo.db.reservas.find({"user_id": user_id, "aceitado": False})
+    return render_template('home.html', reservas_pendentes=reservas_pendentes, reservas_aceites=reservas_aceites, user=user, mesas_map=mesas_map)
+
 
 if __name__ == '__main__':
     app.run(debug=True)
