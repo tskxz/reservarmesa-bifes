@@ -110,7 +110,9 @@ def reservar_page():
         return redirect(url_for('protected_page'))
 
     mesas = mongo.db.mesas.find({"reservado": False})
-    return render_template('reservar.html', mesas=mesas)
+    menus = mongo.db.menus.find()
+    pratos = mongo.db.pratos.find()
+    return render_template('reservar.html', mesas=mesas, menus=menus, pratos=pratos)
 
 @app.route('/funcionarios')
 @login_required
