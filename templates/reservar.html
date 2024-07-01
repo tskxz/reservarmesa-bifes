@@ -30,6 +30,7 @@
             <li>
                 <input type="checkbox" id="prato_{{ prato._id }}" name="prato_id" value="{{ prato._id }}">
                 <label for="prato_{{ prato._id }}">{{ prato.nome }} - {{ prato.descricao }} - Preço: {{ prato.preco }}</label>
+                <input type="number" id="quantidade_{{ prato._id }}" name="quantidade_{{ prato._id }}" min="1" value="1" required>
             </li>
             {% endif %}
             {% endfor %}
