@@ -20,6 +20,23 @@
         <label for="data_hora">Data e Hora:</label>
         <input type="datetime-local" id="data_hora" name="data_hora" required>
         <br>
+
+        <h2>Escolha os Pratos:</h2>
+        {% for menu in menus %}
+        <h3>{{ menu.nome }}</h3>
+        <ul>
+            {% for prato in pratos %}
+            {% if prato.menu_id == menu._id %}
+            <li>
+                <input type="checkbox" id="prato_{{ prato._id }}" name="prato_id" value="{{ prato._id }}">
+                <label for="prato_{{ prato._id }}">{{ prato.nome }} - {{ prato.descricao }} - Preço: {{ prato.preco }}</label>
+                <input type="number" id="quantidade_{{ prato._id }}" name="quantidade_{{ prato._id }}" min="1" value="1" required>
+            </li>
+            {% endif %}
+            {% endfor %}
+        </ul>
+        {% endfor %}
+
         <button type="submit">Reservar</button>
     </form>
 </body>
