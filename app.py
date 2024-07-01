@@ -451,15 +451,14 @@ def exibir_reservas():
     reservas = mongo.db.reservas.find()
     users = mongo.db.users.find()
     mesas = mongo.db.mesas.find()
+    pratos = mongo.db.pratos.find()
+
     users_map = {user['_id']: {'username': user['username'], 'telemovel': user['telemovel']} for user in users}
     mesas_map = {mesa['_id']: {'identificacao': mesa['identificacao'], 'quantidade_pessoas': mesa['quantidade_pessoas']} for mesa in mesas}
-    # funcionarios = mongo.db.funcionarios.find()
-
-    # Criar um dicionário para mapear o _id do funcionário para o nome
-    #funcionarios_map = {funcionario['_id']: funcionario['nome'] for funcionario in funcionarios}
+    pratos_map = {str(prato['_id']): {'nome': prato['nome'], 'descricao': prato['descricao'], 'preco': prato['preco']} for prato in pratos}
 
     # Renderizar o template 'exibir_mesas.html' passando mesas e o dicionário de funcionários
-    return render_template('exibir_reservas.html', reservas=reservas, users_map=users_map, mesas_map=mesas_map)
+    return render_template('exibir_reservas.html', reservas=reservas, users_map=users_map, mesas_map=mesas_map, pratos_map=pratos_map, str=str)
 
 @app.route('/deletar_reserva/<reserva_id>')
 @login_required
