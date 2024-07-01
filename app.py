@@ -88,6 +88,7 @@ def reservar_page():
     if request.method == 'POST':
         mesa_id = request.form['mesa_id']
         data_hora = request.form['data_hora']
+        pratos = request.form.getlist('prato_id')  # Lista de IDs dos pratos selecionados
 
         # Formatar a data e hora
         try:
@@ -103,16 +104,26 @@ def reservar_page():
             "user_id": mongo.db.users.find_one({"username": user_id})['_id'],
             "mesa_id": ObjectId(mesa_id),
             "data_hora": data_hora_formatada,
-            "aceitado": False
+            "aceitado": False,
+            "pratos": [ObjectId(prato) for prato in pratos]  # Converter IDs para ObjectId
         }
         mongo.db.reservas.insert_one(reserva)
+
+        # Atualizar status da mesa para reservado
+        mongo.db.mesas.update_one(
+            {"_id": ObjectId(mesa_id)},
+            {"$set": {"reservado": True}}
+        )
+
         flash('Reserva feita com sucesso. Aguarde a confirmação.')
         return redirect(url_for('protected_page'))
 
     mesas = mongo.db.mesas.find({"reservado": False})
     menus = mongo.db.menus.find()
     pratos = mongo.db.pratos.find()
+
     return render_template('reservar.html', mesas=mesas, menus=menus, pratos=pratos)
+
 
 @app.route('/funcionarios')
 @login_required
