@@ -2,3 +2,18 @@
 <form action="{{ url_for('logout_page') }}" method="get">
     <button type="submit">Logout</button>
 </form>
+<h2>Reservas pendentes</h2>
+{% for reserva in reservas_pendentes %}
+<li>
+    Data e Hora: {{ reserva.data_hora }} - Cliente: {{ user.username }} - Telemovel: {{ user.telemovel }} - Aceitado: {% if reserva.aceitado %} Sim {% else %} Não {% endif %} - Mesa: {{ mesas_map[reserva.mesa_id]['identificacao'] }} - Quantidade de Pessoas: {{ mesas_map[reserva.mesa_id]['quantidade_pessoas'] }}
+    <a href="{{ url_for('deletar_reserva', reserva_id=reserva._id) }}">Anular</a>
+</li>
+{% endfor %}
+
+<h2>Reservas Aceites</h2>
+{% for reserva in reservas_aceites %}
+<li>
+    Data e Hora: {{ reserva.data_hora }} - Cliente: {{ user.username }} - Telemovel: {{ user.telemovel }} - Aceitado: {% if reserva.aceitado %} Sim {% else %} Não {% endif %} - Mesa: {{ mesas_map[reserva.mesa_id]['identificacao'] }} - Quantidade de Pessoas: {{ mesas_map[reserva.mesa_id]['quantidade_pessoas'] }}
+    <a href="{{ url_for('deletar_reserva', reserva_id=reserva._id) }}">Anular</a>
+</li>
+{% endfor %}
