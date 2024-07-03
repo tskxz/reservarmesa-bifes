@@ -517,11 +517,13 @@ def home():
     user = mongo.db.users.find_one({"username": current_user.id})
     user_id = user['_id']
     mesas = mongo.db.mesas.find()
+    pratos = mongo.db.pratos.find()
+    pratos_map = {str(prato['_id']): {'nome': prato['nome'], 'descricao': prato['descricao'], 'preco': prato['preco']} for prato in pratos}
     mesas_map = {mesa['_id']: {'identificacao': mesa['identificacao'], 'quantidade_pessoas': mesa['quantidade_pessoas']} for mesa in mesas}
     reservas_pendentes = mongo.db.reservas.find({"user_id": user_id, "aceitado": False})
     reservas_aceites = mongo.db.reservas.find({"user_id": user_id, "aceitado": True})
 
-    return render_template('home.html', reservas_pendentes=reservas_pendentes, reservas_aceites=reservas_aceites, user=user, mesas_map=mesas_map)
+    return render_template('home.html', reservas_pendentes=reservas_pendentes, reservas_aceites=reservas_aceites, user=user, mesas_map=mesas_map, pratos_map=pratos_map, str=str)
 
 
 if __name__ == '__main__':
