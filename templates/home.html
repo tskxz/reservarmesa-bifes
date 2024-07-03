@@ -2,3 +2,42 @@
 <form action="{{ url_for('logout_page') }}" method="get">
     <button type="submit">Logout</button>
 </form>
+<h2>Reservas pendentes</h2>
+{% for reserva in reservas_pendentes %}
+<li>
+    Data e Hora: {{ reserva.data_hora }} - Cliente: {{ user.username }} - Telemovel: {{ user.telemovel }} - Aceitado: {% if reserva.aceitado %} Sim {% else %} Não {% endif %} - Mesa: {{ mesas_map[reserva.mesa_id]['identificacao'] }} - Quantidade de Pessoas: {{ mesas_map[reserva.mesa_id]['quantidade_pessoas'] }}
+    <ul>
+        {% for prato_id in reserva.pratos %}
+            {% set prato = pratos_map.get(str(prato_id), None) %}
+            {% if prato %}
+                <li>
+                    Prato: {{ prato['nome'] }} - Descrição: {{ prato['descricao'] }} - Preço: {{ prato['preco'] }}
+                </li>
+            {% else %}
+                <li>Prato ID {{ prato_id }} não encontrado.</li>
+            {% endif %}
+        {% endfor %}
+    </ul>
+    <a href="{{ url_for('deletar_reserva', reserva_id=reserva._id) }}">Anular</a>
+</li>
+{% endfor %}
+
+<h2>Reservas Aceites</h2>
+{% for reserva in reservas_aceites %}
+<li>
+    Data e Hora: {{ reserva.data_hora }} - Cliente: {{ user.username }} - Telemovel: {{ user.telemovel }} - Aceitado: {% if reserva.aceitado %} Sim {% else %} Não {% endif %} - Mesa: {{ mesas_map[reserva.mesa_id]['identificacao'] }} - Quantidade de Pessoas: {{ mesas_map[reserva.mesa_id]['quantidade_pessoas'] }}
+    <ul>
+        {% for prato_id in reserva.pratos %}
+            {% set prato = pratos_map.get(str(prato_id), None) %}
+            {% if prato %}
+                <li>
+                    Prato: {{ prato['nome'] }} - Descrição: {{ prato['descricao'] }} - Preço: {{ prato['preco'] }}
+                </li>
+            {% else %}
+                <li>Prato ID {{ prato_id }} não encontrado.</li>
+            {% endif %}
+        {% endfor %}
+    </ul>
+    <a href="{{ url_for('deletar_reserva', reserva_id=reserva._id) }}">Anular</a>
+</li>
+{% endfor %}

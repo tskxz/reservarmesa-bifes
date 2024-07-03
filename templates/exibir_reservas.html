@@ -13,6 +13,18 @@
         {% for reserva in reservas %}
             <li>
                 Data e Hora: {{ reserva.data_hora }} - Cliente: {{ users_map[reserva.user_id]['username'] }} - Telemovel: {{ users_map[reserva.user_id]['telemovel'] }} - Aceitado: {% if reserva.aceitado %} Sim {% else %} Não {% endif %} - Mesa: {{ mesas_map[reserva.mesa_id]['identificacao'] }} - Quantidade de Pessoas: {{ mesas_map[reserva.mesa_id]['quantidade_pessoas'] }}
+                <ul>
+                    {% for prato_id in reserva.pratos %}
+                        {% set prato = pratos_map.get(str(prato_id), None) %}
+                        {% if prato %}
+                            <li>
+                                Prato: {{ prato['nome'] }} - Descrição: {{ prato['descricao'] }} - Preço: {{ prato['preco'] }}
+                            </li>
+                        {% else %}
+                            <li>Prato ID {{ prato_id }} não encontrado.</li>
+                        {% endif %}
+                    {% endfor %}
+                </ul>
                 <a href="{{ url_for('aceitar_reserva', reserva_id=reserva._id) }}">Aceitar</a>
                 <a href="{{ url_for('deletar_reserva', reserva_id=reserva._id) }}">Deletar</a>
             </li>

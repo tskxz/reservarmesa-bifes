@@ -88,6 +88,7 @@ def reservar_page():
     if request.method == 'POST':
         mesa_id = request.form['mesa_id']
         data_hora = request.form['data_hora']
+        pratos = request.form.getlist('prato_id')  # Lista de IDs dos pratos selecionados
 
         # Formatar a data e hora
         try:
@@ -103,14 +104,26 @@ def reservar_page():
             "user_id": mongo.db.users.find_one({"username": user_id})['_id'],
             "mesa_id": ObjectId(mesa_id),
             "data_hora": data_hora_formatada,
-            "aceitado": False
+            "aceitado": False,
+            "pratos": [ObjectId(prato) for prato in pratos]  # Converter IDs para ObjectId
         }
         mongo.db.reservas.insert_one(reserva)
+
+        # Atualizar status da mesa para reservado
+        mongo.db.mesas.update_one(
+            {"_id": ObjectId(mesa_id)},
+            {"$set": {"reservado": True}}
+        )
+
         flash('Reserva feita com sucesso. Aguarde a confirmação.')
         return redirect(url_for('protected_page'))
 
     mesas = mongo.db.mesas.find({"reservado": False})
-    return render_template('reservar.html', mesas=mesas)
+    menus = mongo.db.menus.find()
+    pratos = mongo.db.pratos.find()
+
+    return render_template('reservar.html', mesas=mesas, menus=menus, pratos=pratos)
+
 
 @app.route('/funcionarios')
 @login_required
@@ -438,15 +451,14 @@ def exibir_reservas():
     reservas = mongo.db.reservas.find()
     users = mongo.db.users.find()
     mesas = mongo.db.mesas.find()
+    pratos = mongo.db.pratos.find()
+
     users_map = {user['_id']: {'username': user['username'], 'telemovel': user['telemovel']} for user in users}
     mesas_map = {mesa['_id']: {'identificacao': mesa['identificacao'], 'quantidade_pessoas': mesa['quantidade_pessoas']} for mesa in mesas}
-    # funcionarios = mongo.db.funcionarios.find()
-
-    # Criar um dicionário para mapear o _id do funcionário para o nome
-    #funcionarios_map = {funcionario['_id']: funcionario['nome'] for funcionario in funcionarios}
+    pratos_map = {str(prato['_id']): {'nome': prato['nome'], 'descricao': prato['descricao'], 'preco': prato['preco']} for prato in pratos}
 
     # Renderizar o template 'exibir_mesas.html' passando mesas e o dicionário de funcionários
-    return render_template('exibir_reservas.html', reservas=reservas, users_map=users_map, mesas_map=mesas_map)
+    return render_template('exibir_reservas.html', reservas=reservas, users_map=users_map, mesas_map=mesas_map, pratos_map=pratos_map, str=str)
 
 @app.route('/deletar_reserva/<reserva_id>')
 @login_required
@@ -502,7 +514,17 @@ def ping():
 @app.route("/")
 @login_required
 def home():
-    return render_template('home.html')
+    user = mongo.db.users.find_one({"username": current_user.id})
+    user_id = user['_id']
+    mesas = mongo.db.mesas.find()
+    pratos = mongo.db.pratos.find()
+    pratos_map = {str(prato['_id']): {'nome': prato['nome'], 'descricao': prato['descricao'], 'preco': prato['preco']} for prato in pratos}
+    mesas_map = {mesa['_id']: {'identificacao': mesa['identificacao'], 'quantidade_pessoas': mesa['quantidade_pessoas']} for mesa in mesas}
+    reservas_pendentes = mongo.db.reservas.find({"user_id": user_id, "aceitado": False})
+    reservas_aceites = mongo.db.reservas.find({"user_id": user_id, "aceitado": True})
+
+    return render_template('home.html', reservas_pendentes=reservas_pendentes, reservas_aceites=reservas_aceites, user=user, mesas_map=mesas_map, pratos_map=pratos_map, str=str)
+
 
 if __name__ == '__main__':
     app.run(debug=True)
