@@ -43,9 +43,20 @@ def register_page():
         return redirect(url_for('login_page'))
     return render_template('register.html')
 
+@app.route('/dashboard_test')
+def dashboard_test():
+    return render_template('dashboard_test.html')
 @app.route('/login_test')
 def login_test():
     return render_template('login_test.html')
+
+@app.route('/dashboard_funcionarios')
+def dashboard_funcionarios():
+    return render_template('dashboard_funcionarios.html')
+
+@app.route('/dashboard_mesas')
+def dashboard_mesas():
+    return render_template('dashboard_mesas.html')
 @app.route('/login', methods=['GET', 'POST'])
 def login_page():
     if request.method == 'POST':
