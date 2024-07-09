@@ -5,7 +5,7 @@ from werkzeug.security import generate_password_hash, check_password_hash
 from bson.objectid import ObjectId
 from datetime import datetime
 
-app = Flask(__name__)
+app = Flask(__name__, static_url_path='/static', static_folder='static')
 app.config["SECRET_KEY"] = "sh!"
 app.config["MONGO_URI"] = "mongodb://localhost:27017/reservetablebifes"
 mongo = PyMongo(app)
@@ -43,6 +43,9 @@ def register_page():
         return redirect(url_for('login_page'))
     return render_template('register.html')
 
+@app.route('/login_test')
+def login_test():
+    return render_template('login_test.html')
 @app.route('/login', methods=['GET', 'POST'])
 def login_page():
     if request.method == 'POST':
