@@ -22,13 +22,13 @@
                 </li>  
             
             <li>
-                <a href="{{ url_for('dashboard_funcionarios') }}" class="active" id="accounts"><i class='bx bxs-user-account'></i><span>Funcionarios</span></a>
+                <a href="{{ url_for('dashboard_funcionarios') }}" class="" id="accounts"><i class='bx bxs-user-account'></i><span>Funcionarios</span></a>
             </li>
             <li>
                 <a href="{{ url_for('dashboard_mesas') }}" class="" id="reserve"><i class='bx bxs-calendar'></i></i><span>Mesas</span></a>
             </li>
             <li>
-                <a href="{{ url_for('dashboard_menus') }}" class="" id="reviews"><i class='bx bxs-comment-detail'></i><span>Menus</span></a>
+                <a href="{{ url_for('dashboard_menus') }}" class="active" id="reviews"><i class='bx bxs-comment-detail'></i><span>Menus</span></a>
             </li>
             <li>
                 <a href="{{ url_for('exibir_reservas') }}" class="" id="reviews"><i class='bx bxs-comment-detail'></i><span>Reservas</span></a>
@@ -61,15 +61,15 @@
             <div class="accounts">
                 <div class="account-overview">
                     <div class="header">
-                        <h2>Funcionários</h2>
+                        <h2>Menus</h2>
                         <button class="see-all" onclick="redirectToNewPage()">See all →</button>
                     </div>
                     <table>
                         <thead>
                             <tr>
-                                <th>Funcionário ID</th>
+                                
                                 <th>Nome</th>
-                                <th>Num Telemovel</th>
+                                <th>Descricao</th>
                                 <th>Action</th>
                             </tr>
                         </thead>
@@ -77,11 +77,19 @@
                             
                             
                             <tr>
-                                <td></td>
-                                <td></td>
-                                <td></td>
-                                <td><button class="view-details">Editar</button> <button class="view-details">Apagar</button></td>
+                                <td>Carne</td>
+                                <td>Delicias de carne</td>
+                                
+                                <td><button class="view-details">Ver Pratos</button>  <button class="view-details">Editar</button>  <button class="view-details">Apagar</button></td>
                             </tr>
+
+                            <tr>
+                                <td>Peixe</td>
+                                <td>Delicias de peixe</td>
+                                
+                                <td><button class="view-details">Ver Pratos</button>  <button class="view-details">Editar</button>  <button class="view-details">Apagar</button></td>
+                            </tr>
+                           
                            
                         </tbody>
                     </table>

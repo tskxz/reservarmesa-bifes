@@ -18,7 +18,7 @@
         <div class="sidebar-menu">
             <ul>
                 <li>
-                    <a href="{{ url_for('dashboard_mesas') }}" class="active" id="dashboard"><i class='bx bx-clipboard'></i><span>Dashboard</span></a>
+                    <a href="{{ url_for('dashboard_mesas') }}" class="" id="dashboard"><i class='bx bx-clipboard'></i><span>Dashboard</span></a>
                 </li>  
             
             <li>
@@ -31,7 +31,7 @@
                 <a href="{{ url_for('dashboard_menus') }}" class="" id="reviews"><i class='bx bxs-comment-detail'></i><span>Menus</span></a>
             </li>
             <li>
-                <a href="{{ url_for('exibir_reservas') }}" class="" id="reviews"><i class='bx bxs-comment-detail'></i><span>Reservas</span></a>
+                <a href="{{ url_for('exibir_reservas') }}" class="active" id="reviews"><i class='bx bxs-comment-detail'></i><span>Reservas</span></a>
             </li>
 
             </li> 
@@ -56,7 +56,7 @@
             </div>
         </header>
 
-            <main id="dashboard-section">
+            <main id="dashboard-section" class="hidden">
             <div class="cards">
                 <div class="card-single">
                     <div>
@@ -158,7 +158,7 @@
             </div>
         </main>
 
-        <main id="reserve-section" class="hidden">
+        <main id="reserve-section">
             <section class="reserved-cars">
                 <div class="header">
                     <h2>Reserved Cars</h2>

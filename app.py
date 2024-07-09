@@ -54,6 +54,11 @@ def login_test():
 def dashboard_funcionarios():
     return render_template('dashboard_funcionarios.html')
 
+@app.route('/dashboard_menus')
+def dashboard_menus():
+    return render_template('dashboard_menus.html')
+
+
 @app.route('/dashboard_mesas')
 def dashboard_mesas():
     return render_template('dashboard_mesas.html')
