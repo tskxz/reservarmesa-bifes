@@ -58,6 +58,9 @@ def dashboard_funcionarios():
 def dashboard_menus():
     return render_template('dashboard_menus.html')
 
+@app.route('/dashboard_reservas')
+def dashboard_reservas():
+    return render_template('dashboard_reservas.html')
 
 @app.route('/dashboard_mesas')
 def dashboard_mesas():
