@@ -76,15 +76,16 @@
                         </thead>
                         <tbody>
                             
-                            
+                        {% for mesa in mesas %}
                             <tr>
-                                <td></td>
-                                <td></td>
-                                <td></td>
-                                <td></td>
-                                <td><button class="view-details">Editar</button> <button class="view-details">Apagar</button></td>
+                                <td>{{ mesa.identificacao }}</td>
+                                <td>{{ mesa.quantidade_pessoas }}</td>
+                                <td>{% if mesa.reservado %} Sim {% else %} Não {% endif %}</td>
+                                <td>{{ funcionarios_map[mesa.funcionario_id] }}</td>
+                                <td><a href="{{ url_for('editar_mesa', mesa_id=mesa._id) }}"><button class="view-details">Editar</button></a> <a href="{{ url_for('deletar_mesa', mesa_id=mesa._id) }}"><button class="view-details">Apagar</button></a></td>
                                 
-                            </tr>
+                            </tr
+                        {% endfor %}                            
                            
                         </tbody>
                     </table>

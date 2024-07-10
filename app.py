@@ -65,7 +65,13 @@ def dashboard_reservas():
 
 @app.route('/dashboard_mesas')
 def dashboard_mesas():
-    return render_template('dashboard_mesas.html')
+    mesas = mongo.db.mesas.find()
+    funcionarios = mongo.db.funcionarios.find()
+
+    # Criar um dicionário para mapear o _id do funcionário para o nome
+    funcionarios_map = {funcionario['_id']: funcionario['nome'] for funcionario in funcionarios}
+
+    return render_template('dashboard_mesas.html', mesas=mesas, funcionarios_map=funcionarios_map)
 @app.route('/login', methods=['GET', 'POST'])
 def login_page():
     if request.method == 'POST':
