@@ -52,7 +52,8 @@ def login_test():
 
 @app.route('/dashboard_funcionarios')
 def dashboard_funcionarios():
-    return render_template('dashboard_funcionarios.html')
+    funcionarios = mongo.db.funcionarios.find()
+    return render_template('dashboard_funcionarios.html', funcionarios=funcionarios)
 
 @app.route('/dashboard_menus')
 def dashboard_menus():
@@ -156,7 +157,6 @@ def funcionarios_page():
 
     funcionarios = mongo.db.funcionarios.find()
     return render_template('funcionarios.html', funcionarios=funcionarios)
-
 @app.route('/adicionar_funcionario', methods=['POST'])
 @login_required
 def adicionar_funcionario():

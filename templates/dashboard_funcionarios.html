@@ -67,7 +67,7 @@
                     <table>
                         <thead>
                             <tr>
-                                <th>Funcionário ID</th>
+                                
                                 <th>Nome</th>
                                 <th>Num Telemovel</th>
                                 <th>Action</th>
@@ -75,13 +75,13 @@
                         </thead>
                         <tbody>
                             
-                            
+                            {% for funcionario in funcionarios %}
                             <tr>
-                                <td></td>
-                                <td></td>
-                                <td></td>
-                                <td><button class="view-details">Editar</button> <button class="view-details">Apagar</button></td>
+                                <td> {{ funcionario.nome }}</td>
+                                <td>{{ funcionario.telemovel }}</td>
+                                <td>                <a href="{{ url_for('editar_funcionario', funcionario_id=funcionario._id) }}"><button class="view-details">Editar</button></a> <a href="{{ url_for('deletar_funcionario', funcionario_id=funcionario._id) }}"><button class="view-details">Apagar</button></a></td>
                             </tr>
+                            {% endfor %}
                            
                         </tbody>
                     </table>
