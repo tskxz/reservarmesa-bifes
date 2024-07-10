@@ -57,7 +57,8 @@ def dashboard_funcionarios():
 
 @app.route('/dashboard_menus')
 def dashboard_menus():
-    return render_template('dashboard_menus.html')
+    menus = mongo.db.menus.find()
+    return render_template('dashboard_menus.html', menus=menus)
 
 @app.route('/dashboard_reservas')
 def dashboard_reservas():

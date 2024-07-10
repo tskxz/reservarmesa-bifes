@@ -76,20 +76,21 @@
                         <tbody>
                             
                             
+                            {% for menu in menus %}
                             <tr>
-                                <td>Carne</td>
-                                <td>Delicias de carne</td>
+                                <td>{{ menu.nome }}</td>
+                                <td>{{ menu.descricao }}</td>
                                 
-                                <td><button class="view-details">Ver Pratos</button>  <button class="view-details">Editar</button>  <button class="view-details">Apagar</button></td>
+                                <td> 
+                                    <a href="{{ url_for('listar_pratos', menu_id=menu._id) }}">
+                                        <button class="view-details">Ver Pratos</button></a> 
+                                    <a href="{{ url_for('editar_menu', menu_id=menu._id) }}">
+                                        <button class="view-details">Editar</button></a>
+                                    <a href="{{ url_for('deletar_menu', menu_id=menu._id) }}">
+                                        <button class="view-details">Apagar</button></a>
+                                </td>
                             </tr>
-
-                            <tr>
-                                <td>Peixe</td>
-                                <td>Delicias de peixe</td>
-                                
-                                <td><button class="view-details">Ver Pratos</button>  <button class="view-details">Editar</button>  <button class="view-details">Apagar</button></td>
-                            </tr>
-                           
+                            {% endfor %}
                            
                         </tbody>
                     </table>
