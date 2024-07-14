@@ -165,6 +165,14 @@ def reservar_page():
 
     return render_template('reservar.html', mesas=mesas, menus=menus, pratos=pratos)
 
+@app.route('/funcionarios/criar')
+@login_required
+def criar_funcionario():
+    if current_user.role != 'admin':
+        flash('Acesso negado. Apenas administradores podem acessar esta página.')
+        return redirect(url_for('protected_page'))
+
+    return render_template('criar_funcionario.html')
 
 @app.route('/funcionarios')
 @login_required
