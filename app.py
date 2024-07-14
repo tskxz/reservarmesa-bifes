@@ -62,7 +62,18 @@ def dashboard_menus():
 
 @app.route('/dashboard_reservas')
 def dashboard_reservas():
-    return render_template('dashboard_reservas.html')
+    reservas = mongo.db.reservas.find()
+    users = mongo.db.users.find()
+    mesas = mongo.db.mesas.find()
+    pratos = mongo.db.pratos.find()
+
+    users_map = {user['_id']: {'username': user['username'], 'telemovel': user['telemovel']} for user in users}
+    mesas_map = {mesa['_id']: {'identificacao': mesa['identificacao'], 'quantidade_pessoas': mesa['quantidade_pessoas']} for mesa in mesas}
+    pratos_map = {str(prato['_id']): {'nome': prato['nome'], 'descricao': prato['descricao'], 'preco': prato['preco']} for prato in pratos}
+    
+    reservas_pendentes = mongo.db.reservas.find({"aceitado": False})
+    reservas_aceites = mongo.db.reservas.find({"aceitado": True})
+    return render_template('dashboard_reservas.html', reservas=reservas, users=users, users_map=users_map, mesas_map=mesas_map, pratos_map=pratos_map, reservas_pendentes=reservas_pendentes, reservas_aceites=reservas_aceites, str=str)
 
 @app.route('/dashboard_mesas')
 def dashboard_mesas():

@@ -190,28 +190,31 @@
                     <button class="see-all">See all →</button>
                 </div>
                 <div class="request-list">
+                    {% for reserva in reservas_pendentes %}
                     <div class="request-item">
                         <div class="request-info">
-                            <h3>Mesa 3</h3>
-                            <p>Pedido pelo: Manuel</p>
-                            <p>Data Reserva: 2023-06-16</p>
+                            <h3>Mesa {{ mesas_map[reserva.mesa_id]['identificacao'] }}</h3>
+                            <p>Pedido pelo: {{ users_map[reserva.user_id]['username'] }}</p>
+                            <p>Data Reserva: {{ reserva.data_hora }}</p>
+                            <p>Telefone: {{ users_map[reserva.user_id]['telemovel'] }}</p><br>
+                            <h3>Pratos</h3>
+                            {% for prato_id in reserva.pratos %}
+                            {% set prato = pratos_map.get(str(prato_id), None) %}
+                            {% if prato %}
+                            <p>Prato: {{ prato['nome'] }} ({{ prato['preco'] }}€)</p><br>
+                            {% endif %}
+                        {% endfor %}
                             <div class="request-actions">
-                                <button class="approve-btn">Aprovar</button>
-                                <button class="reject-btn">Rejeitar</button>
+                                
+                                <a href="{{ url_for('aceitar_reserva', reserva_id=reserva._id) }}"><button class="approve-btn">Aprovar</button></a>
+                                <a href="{{ url_for('deletar_reserva', reserva_id=reserva._id) }}"><button class="reject-btn">Rejeitar</button></a>
+                                
                             </div>
                         </div>
                     </div>
-                    <div class="request-item">
-                        <div class="request-info">
-                            <h3>Mesa 4</h3>
-                            <p>Pedido pelo: Ricardo</p>
-                            <p>Data Reserva: 2023-06-15</p>
-                            <div class="request-actions">
-                                <button class="approve-btn">Aprovar</button>
-                                <button class="reject-btn">Rejeitar</button>
-                            </div>
-                        </div>
-                    </div>
+                    
+                    {% endfor %}
+                    
                    
                 </div>
             </section>
