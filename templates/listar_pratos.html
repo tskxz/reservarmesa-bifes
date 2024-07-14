@@ -70,7 +70,7 @@
 <body>
     <div class="container">
         <h1>Pratos do Menu: {{ menu.nome }}</h1>
-        <a href="{{ url_for('listar_menus') }}">Voltar para Lista de Menus</a>
+        <a href="{{ url_for('dashboard_menus') }}">Voltar para Lista de Menus</a>
         <h2>Lista de Pratos</h2>
         <ul>
             {% for prato in pratos %}

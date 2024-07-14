@@ -365,7 +365,7 @@ def editar_menu(menu_id):
             }}
         )
         flash('Menu atualizado com sucesso.')
-        return redirect(url_for('listar_menus'))
+        return redirect(url_for('dashboard_menus'))
 
     return render_template('editar_menu.html', menu=menu)
 

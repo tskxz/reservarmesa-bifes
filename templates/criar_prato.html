@@ -3,22 +3,91 @@
 <head>
     <meta charset="UTF-8">
     <title>Adicionar Novo Prato</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f4f9;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+        }
+        .container {
+            background-color: #ffffff;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            width: 600px;
+            text-align: center;
+        }
+        h1 {
+            color: #333333;
+        }
+        form {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+        label {
+            width: 100%;
+            margin-top: 10px;
+            font-weight: bold;
+            text-align: left;
+        }
+        input[type="text"], input[type="number"], textarea, select {
+            padding: 8px;
+            margin-top: 5px;
+            margin-bottom: 10px;
+            border: 1px solid #cccccc;
+            border-radius: 4px;
+            box-sizing: border-box;
+        }
+        button {
+            background-color: #4CAF50;
+            color: white;
+            padding: 10px 15px;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 16px;
+            width: 100%;
+            margin-top: 10px;
+        }
+        button:hover {
+            background-color: #2e7a32;
+        }
+        a {
+            display: block;
+            margin-top: 15px;
+            text-decoration: none;
+            color: #007BFF;
+        }
+        a:hover {
+            text-decoration: underline;
+        }
+    </style>
 </head>
 <body>
-    <h1>Adicionar Novo Prato para o Menu: {{ menu_id }}</h1>
-    <a href="{{ url_for('listar_menus') }}">Voltar para Lista de Menus</a>
-    <br><br>
-    <form action="{{ url_for('criar_prato', menu_id=menu_id) }}" method="POST">
-        <label for="nome">Nome do Prato:</label><br>
-        <input type="text" id="nome" name="nome" required><br><br>
+    <div class="container">
+        <h1>Adicionar Novo Prato para o Menu: {{ menu_id }}</h1>
+        <a href="{{ url_for('dashboard_menus') }}">Voltar para Lista de Menus</a>
+        <br><br>
+        <form action="{{ url_for('criar_prato', menu_id=menu_id) }}" method="POST">
+            <label for="nome">Nome do Prato:</label>
+            <input type="text" id="nome" name="nome" required>
 
-        <label for="descricao">Descrição:</label><br>
-        <textarea id="descricao" name="descricao" rows="4" cols="50" required></textarea><br><br>
+            <label for="descricao">Descrição:</label><br>
+            <textarea class="form-control" id="descricao" name="descricao" rows="5" placeholder="Descrição"></textarea>
 
-        <label for="preco">Preço:</label><br>
-        <input type="number" id="preco" name="preco" step="0.01" required><br><br>
+            <label for="preco">Preço:</label>
+            <input type="number" id="preco" name="preco" step="0.01" required>
 
-        <button type="submit">Adicionar Prato</button>
-    </form>
+            <button type="submit">Adicionar Prato</button>
+        </form>
+    </div>
 </body>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>
 </html>
