@@ -3,7 +3,6 @@
 <head>
     <meta charset="UTF-8">
     <title>Fazer Reserva</title>
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
     <style>
         body {
             font-family: Arial, sans-serif;
@@ -11,123 +10,95 @@
             margin: 0;
             padding: 0;
             display: flex;
-            justify-content: center;
+            flex-direction: column;
             align-items: center;
-            min-height: 100vh;
         }
-        .container {
-            background-color: #ffffff;
+        h1 {
+            color: #333;
+        }
+        form {
+            background: #fff;
             padding: 20px;
             border-radius: 8px;
             box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-            max-width: 800px;
+            max-width: 600px;
             width: 100%;
-            text-align: center;
-        }
-        h1 {
-            color: #333333;
-            margin-bottom: 20px;
-        }
-        h2, h3 {
-            color: #555555;
-        }
-        form {
-            width: 100%;
-        }
-        .form-group {
-            margin-bottom: 15px;
-            text-align: left;
+            margin: 20px 0;
         }
         label {
-            font-weight: bold;
-            margin-bottom: 5px;
             display: block;
+            margin: 10px 0 5px;
+            font-weight: bold;
         }
-        select, input[type="datetime-local"], input[type="number"] {
+        input, select {
             width: 100%;
-            padding: 8px;
-            margin-top: 5px;
-            border: 1px solid #cccccc;
-            border-radius: 4px;
-            box-sizing: border-box;
-        }
-        .menu {
-            text-align: left;
-            margin-bottom: 20px;
-        }
-        .menu h3 {
-            margin-top: 20px;
-        }
-        .menu ul {
-            list-style-type: none;
-            padding: 0;
-        }
-        .menu li {
+            padding: 10px;
             margin-bottom: 10px;
+            border-radius: 4px;
+            border: 1px solid #ccc;
         }
         button {
-            background-color: #4CAF50;
+            background-color: #007bff;
             color: white;
-            padding: 10px 20px;
+            padding: 10px 15px;
             border: none;
             border-radius: 4px;
             cursor: pointer;
-            font-size: 16px;
-            width: 100%;
+            transition: background-color 0.3s;
         }
         button:hover {
-            background-color: #45a049;
+            background-color: #0056b3;
         }
-        a {
-            display: block;
-            margin-top: 15px;
-            text-decoration: none;
-            color: #007BFF;
+        .menu {
+            background: #f9f9f9;
+            padding: 10px;
+            border-radius: 4px;
+            margin-bottom: 10px;
         }
-        a:hover {
-            text-decoration: underline;
+        .menu h3 {
+            margin-top: 0;
+        }
+        ul {
+            list-style-type: none;
+            padding: 0;
+        }
+        ul li {
+            margin-bottom: 5px;
         }
     </style>
 </head>
 <body>
-    <div class="container">
-        <h1>Fazer Reserva</h1>
-        {% for message in get_flashed_messages() %}
-            <div class="alert alert-info">{{ message }}</div>
-        {% endfor %}
-        <form method="post" action="{{ url_for('reservar_page') }}">
-            <div class="form-group">
-                <label for="mesa_id">Mesa:</label>
-                <select name="mesa_id" id="mesa_id" class="form-select">
-                    {% for mesa in mesas %}
-                    <option value="{{ mesa._id }}">{{ mesa.identificacao }} - {{ mesa.quantidade_pessoas }} pessoas</option>
-                    {% endfor %}
-                </select>
-            </div>
-            <div class="form-group">
-                <label for="data_hora">Data e Hora:</label>
-                <input type="datetime-local" id="data_hora" name="data_hora" class="form-control" required>
-            </div>
-            <h2>Escolha os Pratos:</h2>
-            {% for menu in menus %}
-            <div class="menu">
-                <h3>{{ menu.nome }}</h3>
-                <ul>
-                    {% for prato in pratos %}
-                    {% if prato.menu_id == menu._id %}
-                    <li>
-                        <input type="checkbox" id="prato_{{ prato._id }}" name="prato_id" value="{{ prato._id }}">
-                        <label for="prato_{{ prato._id }}">{{ prato.nome }} - {{ prato.descricao }} - Preço: {{ prato.preco }}</label>
-                        <input type="number" id="quantidade_{{ prato._id }}" name="quantidade_{{ prato._id }}" class="form-control" min="1" value="1" required>
-                    </li>
-                    {% endif %}
-                    {% endfor %}
-                </ul>
-            </div>
+    <h1>Fazer Reserva</h1>
+    {% for message in get_flashed_messages() %}
+        <div class="flash-message">{{ message }}</div>
+    {% endfor %}
+    <form method="post" action="{{ url_for('reservar_page') }}">
+        <label for="mesa_id">Mesa:</label>
+        <select name="mesa_id" id="mesa_id">
+            {% for mesa in mesas %}
+            <option value="{{ mesa._id }}">{{ mesa.identificacao }} - {{ mesa.quantidade_pessoas }} pessoas</option>
             {% endfor %}
-            <button type="submit" class="btn btn-success">Reservar</button>
-        </form>
-    </div>
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>
+        </select>
+        <label for="data_hora">Data e Hora:</label>
+        <input type="datetime-local" id="data_hora" name="data_hora" required>
+        <h2>Escolha os Pratos:</h2>
+        {% for menu in menus %}
+        <div class="menu">
+            <h3>{{ menu.nome }}</h3>
+            <ul>
+                {% for prato in pratos %}
+                {% if prato.menu_id == menu._id %}
+                <li>
+                    <input type="checkbox" id="prato_{{ prato._id }}" name="prato_id" value="{{ prato._id }}">
+                    <label for="prato_{{ prato._id }}">{{ prato.nome }} - {{ prato.descricao }} - Preço: {{ prato.preco }}</label>
+                    <input type="number" id="quantidade_{{ prato._id }}" name="quantidade_{{ prato._id }}" min="1" value="1" required>
+                </li>
+                {% endif %}
+                {% endfor %}
+            </ul>
+        </div>
+        {% endfor %}
+        <button type="submit">Reservar</button>
+    </form>
 </body>
 </html>
