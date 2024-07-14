@@ -177,7 +177,8 @@
                             {% if prato %}
                             <p>Prato: {{ prato['nome'] }} ({{ prato['preco'] }}€)</p><br>
                             {% endif %}
-                            <a href="{{ url_for('deletar_reserva', reserva_id=reserva._id) }}">Deletar</a>
+                            
+                            <button class="reject-btn"><a href="{{ url_for('deletar_reserva', reserva_id=reserva._id) }}">Deletar</a></button>
                         {% endfor %}
                         </div>
                     </div>
