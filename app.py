@@ -295,7 +295,7 @@ def criar_mesa():
             "funcionario_id": ObjectId(funcionario_id)
         })
         flash('Mesa adicionada com sucesso.')
-        return redirect(url_for('exibir_mesas'))
+        return redirect(url_for('dashboard_mesas'))
 
     # Se não for um método POST, simplesmente renderize o template 'criar_mesa.html'
     funcionarios = mongo.db.funcionarios.find()
