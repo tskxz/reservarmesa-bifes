@@ -171,6 +171,7 @@
                             <p>Cliente: {{ users_map[reserva.user_id]['username'] }}</p>
                             <p>Data Reserva: {{ reserva.data_hora }}</p>
                             <p>Telefone: {{ users_map[reserva.user_id]['telemovel'] }}</p><br>
+                            
                             <h3>Pratos</h3>
                             {% for prato_id in reserva.pratos %}
                             {% set prato = pratos_map.get(str(prato_id), None) %}
@@ -178,8 +179,9 @@
                             <p>Prato: {{ prato['nome'] }} ({{ prato['preco'] }}€)</p><br>
                             {% endif %}
                             
-                            <button class="reject-btn"><a href="{{ url_for('deletar_reserva', reserva_id=reserva._id) }}">Deletar</a></button>
+                            
                         {% endfor %}
+                        <button class="reject-btn"><a href="{{ url_for('deletar_reserva', reserva_id=reserva._id) }}">Deletar</a></button>
                         </div>
                     </div>
                     {% endfor %}
