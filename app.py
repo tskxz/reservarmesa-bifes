@@ -366,7 +366,7 @@ def criar_menu():
 
         if not nome:
             flash('Por favor, preencha todos os campos obrigatórios.')
-            return redirect(url_for('criar_menu'))
+            return redirect(url_for('dashboard_menus'))
 
 
         mongo.db.menus.insert_one({
@@ -374,7 +374,7 @@ def criar_menu():
             "descricao": descricao,
         })
         flash('Menu adicionado com sucesso.')
-        return redirect(url_for('listar_menus'))
+        return redirect(url_for('dashboard_menus'))
 
     return render_template('criar_menu.html')
 
@@ -412,7 +412,7 @@ def deletar_menu(menu_id):
 
     mongo.db.menus.delete_one({"_id": ObjectId(menu_id)})
     flash('Menu deletado com sucesso.')
-    return redirect(url_for('listar_menus'))
+    return redirect(url_for('dashboard_menus'))
 
 @app.route('/menus/<menu_id>/pratos', methods=['GET'])
 @login_required
