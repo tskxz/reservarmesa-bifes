@@ -133,9 +133,10 @@ def dashboard_page():
     pratos_map = {str(prato['_id']): {'nome': prato['nome'], 'descricao': prato['descricao'], 'preco': prato['preco']} for prato in pratos}
     
     reservas_pendentes = mongo.db.reservas.find({"aceitado": False})
+    quantidade_reservas_pendentes = mongo.db.reservas.count_documents({"aceitado": False})
     reservas_aceites = mongo.db.reservas.find({"aceitado": True})
 
-    return render_template('dashboard.html', reservas_pendentes=reservas_pendentes, users_map=users_map, mesas_map=mesas_map, pratos_map=pratos_map, quantidade_users=quantidade_users)
+    return render_template('dashboard.html', quantidade_reservas_pendentes=quantidade_reservas_pendentes, reservas_pendentes=reservas_pendentes, users_map=users_map, mesas_map=mesas_map, pratos_map=pratos_map, quantidade_users=quantidade_users)
 
 @app.route('/reservar', methods=['GET', 'POST'])
 @login_required
