@@ -209,7 +209,7 @@ def adicionar_funcionario():
     telemovel = request.form['telemovel']
     mongo.db.funcionarios.insert_one({"nome": nome, "telemovel": telemovel})
     flash('Funcionário adicionado com sucesso.')
-    return redirect(url_for('funcionarios_page'))
+    return redirect(url_for('dashboard_funcionarios'))
 
 @app.route('/editar_funcionario/<funcionario_id>', methods=['GET', 'POST'])
 @login_required
