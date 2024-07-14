@@ -241,7 +241,7 @@ def deletar_funcionario(funcionario_id):
 
     mongo.db.funcionarios.delete_one({"_id": ObjectId(funcionario_id)})
     flash('Funcionário deletado com sucesso.')
-    return redirect(url_for('funcionarios_page'))
+    return redirect(url_for('dashboard_funcionarios'))
 
 @app.route('/mesas', methods=['GET'])
 @login_required
