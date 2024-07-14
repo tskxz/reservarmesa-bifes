@@ -542,7 +542,7 @@ def deletar_reserva(reserva_id):
         {"$set": {"reservado": False}}
     )
     flash('Reserva deletada com sucesso.')
-    return redirect(url_for('exibir_reservas'))
+    return redirect(url_for('dashboard_reservas'))
 
 @app.route('/aceitar_reserva/<reserva_id>')
 @login_required
@@ -567,7 +567,7 @@ def aceitar_reserva(reserva_id):
     )
 
     flash('Reserva aceita com sucesso.')
-    return redirect(url_for('exibir_reservas'))
+    return redirect(url_for('dashboard_reservas'))
 
 # /ping - Verificar se está a funcionar
 @app.route("/ping")
