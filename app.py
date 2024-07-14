@@ -228,7 +228,7 @@ def editar_funcionario(funcionario_id):
             {"$set": {"nome": nome, "telemovel": telemovel}}
         )
         flash('Funcionário atualizado com sucesso.')
-        return redirect(url_for('funcionarios_page'))
+        return redirect(url_for('dashboard_funcionarios'))
 
     return render_template('editar_funcionario.html', funcionario=funcionario)
 
