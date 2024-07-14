@@ -3,33 +3,114 @@
 <head>
     <meta charset="UTF-8">
     <title>Visualizar Reservas</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f4f9;
+            margin: 0;
+            padding: 20px;
+        }
+        .container {
+            max-width: 800px;
+            margin: 0 auto;
+            background-color: #ffffff;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+        h1 {
+            color: #333333;
+            text-align: center;
+        }
+        h2 {
+            color: #555555;
+            margin-top: 30px;
+        }
+        ul {
+            list-style-type: none;
+            padding: 0;
+        }
+        li {
+            background-color: #f9f9f9;
+            margin: 10px 0;
+            padding: 15px;
+            border-radius: 8px;
+            box-shadow: 0 0 5px rgba(0, 0, 0, 0.1);
+        }
+        ul li ul {
+            list-style-type: none;
+            padding: 0;
+            margin-top: 10px;
+        }
+        ul li ul li {
+            background-color: #e9ecef;
+            padding: 8px;
+            border-radius: 4px;
+            margin-top: 5px;
+        }
+        .actions {
+            margin-top: 10px;
+        }
+        .actions a {
+            text-decoration: none;
+            color: #007BFF;
+            margin-right: 10px;
+        }
+        .actions a:hover {
+            text-decoration: underline;
+        }
+        .back-link {
+            display: block;
+            margin-top: 20px;
+            text-align: center;
+        }
+        .back-link a {
+            text-decoration: none;
+            color: #007BFF;
+        }
+        .back-link a:hover {
+            text-decoration: underline;
+        }
+    </style>
 </head>
 <body>
-    <h1>Reservas</h1>
-    <a href="{{ url_for('dashboard_page') }}">Voltar ao Dashboard</a>
-    <br><br>
-    <h2>Lista de Reservas</h2>
-    <ul>
-        {% for reserva in reservas %}
-            <li>
-                Data e Hora: {{ reserva.data_hora }} - Cliente: {{ users_map[reserva.user_id]['username'] }} - Telemovel: {{ users_map[reserva.user_id]['telemovel'] }} - Aceitado: {% if reserva.aceitado %} Sim {% else %} Não {% endif %} - Mesa: {{ mesas_map[reserva.mesa_id]['identificacao'] }} - Quantidade de Pessoas: {{ mesas_map[reserva.mesa_id]['quantidade_pessoas'] }}
-                <ul>
-                    {% for prato_id in reserva.pratos %}
-                        {% set prato = pratos_map.get(str(prato_id), None) %}
-                        {% if prato %}
-                            <li>
-                                Prato: {{ prato['nome'] }} - Descrição: {{ prato['descricao'] }} - Preço: {{ prato['preco'] }}
-                            </li>
-                        {% else %}
-                            <li>Prato ID {{ prato_id }} não encontrado.</li>
-                        {% endif %}
-                    {% endfor %}
-                </ul>
-                <a href="{{ url_for('aceitar_reserva', reserva_id=reserva._id) }}">Aceitar</a>
-                <a href="{{ url_for('deletar_reserva', reserva_id=reserva._id) }}">Deletar</a>
-            </li>
-        {% endfor %}
-    </ul>
-    <br>
+    <div class="container">
+        <h1>Reservas</h1>
+        <a class="back-link" href="{{ url_for('dashboard_page') }}">Voltar ao Dashboard</a>
+
+        <h2>Lista de Reservas</h2>
+        <ul>
+            {% for reserva in reservas %}
+                <li>
+                    <strong>Data e Hora:</strong> {{ reserva.data_hora }}<br>
+                    <strong>Cliente:</strong> {{ users_map[reserva.user_id]['username'] }}<br>
+                    <strong>Telemovel:</strong> {{ users_map[reserva.user_id]['telemovel'] }}<br>
+                    <strong>Aceitado:</strong> {% if reserva.aceitado %} Sim {% else %} Não {% endif %}<br>
+                    <strong>Mesa:</strong> {{ mesas_map[reserva.mesa_id]['identificacao'] }}<br>
+                    <strong>Quantidade de Pessoas:</strong> {{ mesas_map[reserva.mesa_id]['quantidade_pessoas'] }}
+
+                    <ul>
+                        {% for prato_id in reserva.pratos %}
+                            {% set prato = pratos_map.get(str(prato_id), None) %}
+                            {% if prato %}
+                                <li>
+                                    <strong>Prato:</strong> {{ prato['nome'] }}<br>
+                                    <strong>Descrição:</strong> {{ prato['descricao'] }}<br>
+                                    <strong>Preço:</strong> {{ prato['preco'] }}
+                                </li>
+                            {% else %}
+                                <li>Prato ID {{ prato_id }} não encontrado.</li>
+                            {% endif %}
+                        {% endfor %}
+                    </ul>
+
+                    <div class="actions">
+                        <a href="{{ url_for('aceitar_reserva', reserva_id=reserva._id) }}">Aceitar</a>
+                        <a href="{{ url_for('deletar_reserva', reserva_id=reserva._id) }}">Deletar</a>
+                    </div>
+                </li>
+            {% endfor %}
+        </ul>
+    </div>
 </body>
 </html>
