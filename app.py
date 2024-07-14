@@ -209,7 +209,7 @@ def adicionar_funcionario():
     telemovel = request.form['telemovel']
     mongo.db.funcionarios.insert_one({"nome": nome, "telemovel": telemovel})
     flash('Funcionário adicionado com sucesso.')
-    return redirect(url_for('funcionarios_page'))
+    return redirect(url_for('dashboard_funcionarios'))
 
 @app.route('/editar_funcionario/<funcionario_id>', methods=['GET', 'POST'])
 @login_required
@@ -228,7 +228,7 @@ def editar_funcionario(funcionario_id):
             {"$set": {"nome": nome, "telemovel": telemovel}}
         )
         flash('Funcionário atualizado com sucesso.')
-        return redirect(url_for('funcionarios_page'))
+        return redirect(url_for('dashboard_funcionarios'))
 
     return render_template('editar_funcionario.html', funcionario=funcionario)
 
@@ -241,7 +241,7 @@ def deletar_funcionario(funcionario_id):
 
     mongo.db.funcionarios.delete_one({"_id": ObjectId(funcionario_id)})
     flash('Funcionário deletado com sucesso.')
-    return redirect(url_for('funcionarios_page'))
+    return redirect(url_for('dashboard_funcionarios'))
 
 @app.route('/mesas', methods=['GET'])
 @login_required
@@ -295,7 +295,7 @@ def criar_mesa():
             "funcionario_id": ObjectId(funcionario_id)
         })
         flash('Mesa adicionada com sucesso.')
-        return redirect(url_for('exibir_mesas'))
+        return redirect(url_for('dashboard_mesas'))
 
     # Se não for um método POST, simplesmente renderize o template 'criar_mesa.html'
     funcionarios = mongo.db.funcionarios.find()
@@ -326,7 +326,7 @@ def editar_mesa(mesa_id):
             }}
         )
         flash('Mesa atualizada com sucesso.')
-        return redirect(url_for('exibir_mesas'))
+        return redirect(url_for('dashboard_mesas'))
 
 
     funcionarios = mongo.db.funcionarios.find()
@@ -341,7 +341,7 @@ def deletar_mesa(mesa_id):
 
     mongo.db.mesas.delete_one({"_id": ObjectId(mesa_id)})
     flash('Mesa deletada com sucesso.')
-    return redirect(url_for('exibir_mesas'))
+    return redirect(url_for('dashboard_mesas'))
 
 @app.route('/menus')
 @login_required
@@ -366,7 +366,7 @@ def criar_menu():
 
         if not nome:
             flash('Por favor, preencha todos os campos obrigatórios.')
-            return redirect(url_for('criar_menu'))
+            return redirect(url_for('dashboard_menus'))
 
 
         mongo.db.menus.insert_one({
@@ -374,7 +374,7 @@ def criar_menu():
             "descricao": descricao,
         })
         flash('Menu adicionado com sucesso.')
-        return redirect(url_for('listar_menus'))
+        return redirect(url_for('dashboard_menus'))
 
     return render_template('criar_menu.html')
 
@@ -412,7 +412,7 @@ def deletar_menu(menu_id):
 
     mongo.db.menus.delete_one({"_id": ObjectId(menu_id)})
     flash('Menu deletado com sucesso.')
-    return redirect(url_for('listar_menus'))
+    return redirect(url_for('dashboard_menus'))
 
 @app.route('/menus/<menu_id>/pratos', methods=['GET'])
 @login_required
@@ -542,7 +542,7 @@ def deletar_reserva(reserva_id):
         {"$set": {"reservado": False}}
     )
     flash('Reserva deletada com sucesso.')
-    return redirect(url_for('exibir_reservas'))
+    return redirect(url_for('dashboard_reservas'))
 
 @app.route('/aceitar_reserva/<reserva_id>')
 @login_required
@@ -567,7 +567,7 @@ def aceitar_reserva(reserva_id):
     )
 
     flash('Reserva aceita com sucesso.')
-    return redirect(url_for('exibir_reservas'))
+    return redirect(url_for('dashboard_reservas'))
 
 # /ping - Verificar se está a funcionar
 @app.route("/ping")
