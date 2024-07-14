@@ -105,8 +105,8 @@
                                 <td>{{ mesas_map[reserva.mesa_id]['identificacao'] }}</td>
                                 <td>{{ mesas_map[reserva.mesa_id]['quantidade_pessoas'] }}</td>
                                 <td>
-                                    <button class="approve-btn">Ver</button>
-                                    <button class="reject-btn">Rejeitar</button>
+                                    <a href="{{ url_for('aceitar_reserva', reserva_id=reserva._id) }}"><button class="approve-btn">Aprovar</button></a>
+                                <a href="{{ url_for('deletar_reserva', reserva_id=reserva._id) }}"><button class="reject-btn">Rejeitar</button></a>
                                 </td>
                        
                                 
