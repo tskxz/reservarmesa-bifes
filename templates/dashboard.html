@@ -96,35 +96,24 @@
                                 <th>Ações</th>
                             </tr>
                         </thead>
+                        {% for reserva in reservas_pendentes %}
                         <tbody>
                             <tr>
-                                <td>Tanjil</td>
-                                <td>+351914720543</td>
-                                <td>08/07/2024</td>
-                                <td>2</td>
-                                <td>6</td>
+                                <td>{{ users_map[reserva.user_id]['username'] }}</td>
+                                <td>{{ users_map[reserva.user_id]['telemovel'] }}</td>
+                                <td>{{ reserva.data_hora }}</td>
+                                <td>{{ mesas_map[reserva.mesa_id]['identificacao'] }}</td>
+                                <td>{{ mesas_map[reserva.mesa_id]['quantidade_pessoas'] }}</td>
                                 <td>
                                     <button class="approve-btn">Ver</button>
                                     <button class="reject-btn">Rejeitar</button>
                                 </td>
-                                
+                       
                                 
                                 
                             </tr>
                         </tbody>
-                        <tbody>
-                            <tr>
-                                <td>Ricardo</td>
-                                <td>+351928363829</td>
-                                <td>08/07/2024</td>
-                                <td>4</td>
-                                <td>2</td>
-                                <td>
-                                    <button class="approve-btn">Ver</button>
-                                    <button class="reject-btn">Rejeitar</button>
-                                </td>
-                            </tr>
-                        </tbody>
+                        {% endfor %}
                     </table>
                 </div>
                 <div class="new-customer">
