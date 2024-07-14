@@ -62,7 +62,9 @@
                 <div class="account-overview">
                     <div class="header">
                         <h2>Menus</h2>
-                        <button class="see-all" onclick="redirectToNewPage()">See all →</button>
+
+                        <a href="{{ url_for('criar_menu') }}"><button class="see-all" onclick="redirectToNewPage()">Criar menu →</button></a>
+                        
                     </div>
                     <table>
                         <thead>
