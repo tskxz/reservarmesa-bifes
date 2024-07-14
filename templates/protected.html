@@ -9,8 +9,6 @@
     {% for message in get_flashed_messages() %}
         <p>{{ message }}</p>
     {% endfor %}
-    
-    <p>Protected page</p>
 
     <form action="{{ url_for('logout_page') }}" method="get">
         <button type="submit">Logout</button>
