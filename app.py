@@ -326,7 +326,7 @@ def editar_mesa(mesa_id):
             }}
         )
         flash('Mesa atualizada com sucesso.')
-        return redirect(url_for('exibir_mesas'))
+        return redirect(url_for('dashboard_mesas'))
 
 
     funcionarios = mongo.db.funcionarios.find()
@@ -341,7 +341,7 @@ def deletar_mesa(mesa_id):
 
     mongo.db.mesas.delete_one({"_id": ObjectId(mesa_id)})
     flash('Mesa deletada com sucesso.')
-    return redirect(url_for('exibir_mesas'))
+    return redirect(url_for('dashboard_mesas'))
 
 @app.route('/menus')
 @login_required
