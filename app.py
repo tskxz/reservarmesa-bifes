@@ -121,7 +121,20 @@ def dashboard_page():
     if current_user.role != 'admin':
         flash('Acesso negado. Apenas administradores podem acessar esta página.')
         return redirect(url_for('protected_page'))
-    return render_template('dashboard.html')
+    
+    reservas = mongo.db.reservas.find()
+    users = mongo.db.users.find()
+    mesas = mongo.db.mesas.find()
+    pratos = mongo.db.pratos.find()
+
+    users_map = {user['_id']: {'username': user['username'], 'telemovel': user['telemovel']} for user in users}
+    mesas_map = {mesa['_id']: {'identificacao': mesa['identificacao'], 'quantidade_pessoas': mesa['quantidade_pessoas']} for mesa in mesas}
+    pratos_map = {str(prato['_id']): {'nome': prato['nome'], 'descricao': prato['descricao'], 'preco': prato['preco']} for prato in pratos}
+    
+    reservas_pendentes = mongo.db.reservas.find({"aceitado": False})
+    reservas_aceites = mongo.db.reservas.find({"aceitado": True})
+
+    return render_template('dashboard.html', reservas_pendentes=reservas_pendentes, users_map=users_map, mesas_map=mesas_map, pratos_map=pratos_map)
 
 @app.route('/reservar', methods=['GET', 'POST'])
 @login_required
