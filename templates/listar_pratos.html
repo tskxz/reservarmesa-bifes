@@ -3,22 +3,89 @@
 <head>
     <meta charset="UTF-8">
     <title>Pratos do Menu: {{ menu.nome }}</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f4f9;
+            margin: 0;
+            padding: 20px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+        .container {
+            background-color: #ffffff;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            width: 80%;
+            max-width: 800px;
+            text-align: center;
+        }
+        h1, h2 {
+            color: #333333;
+        }
+        a {
+            text-decoration: none;
+            color: #007BFF;
+            margin: 5px 10px;
+        }
+        a:hover {
+            text-decoration: underline;
+        }
+        ul {
+            list-style-type: none;
+            padding: 0;
+        }
+        li {
+            background-color: #f9f9f9;
+            margin: 10px 0;
+            padding: 10px;
+            border-radius: 4px;
+            box-shadow: 0 0 5px rgba(0, 0, 0, 0.1);
+            text-align: left;
+        }
+        li a {
+            margin-left: 10px;
+            color: #007BFF;
+        }
+        li a:hover {
+            text-decoration: underline;
+        }
+        button {
+            background-color: #4CAF50;
+            color: white;
+            padding: 10px 15px;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 16px;
+            margin-top: 10px;
+        }
+        button:hover {
+            background-color: #45a049;
+        }
+    </style>
 </head>
 <body>
-    <h1>Pratos do Menu: {{ menu.nome }}</h1>
-    <a href="{{ url_for('listar_menus') }}">Voltar para Lista de Menus</a>
-    <br><br>
-    <h2>Lista de Pratos</h2>
-    <ul>
-        {% for prato in pratos %}
-            <li>
-                Nome: {{ prato.nome }} - Descrição: {{ prato.descricao }} - Preço: EU€ {{ prato.preco }}
-                <a href="{{ url_for('editar_prato', prato_id=prato._id) }}">Editar</a>
-                <a href="{{ url_for('deletar_prato', prato_id=prato._id) }}">Deletar</a>
-            </li>
-        {% endfor %}
-    </ul>
-    <br>
-    <a href="{{ url_for('criar_prato', menu_id=menu._id) }}">Adicionar Novo Prato</a>
+    <div class="container">
+        <h1>Pratos do Menu: {{ menu.nome }}</h1>
+        <a href="{{ url_for('dashboard_menus') }}">Voltar para Lista de Menus</a>
+        <h2>Lista de Pratos</h2>
+        <ul>
+            {% for prato in pratos %}
+                <li>
+                    <strong>Nome:</strong> {{ prato.nome }}<br>
+                    <strong>Descrição:</strong> {{ prato.descricao }}<br>
+                    <strong>Preço:</strong> EU€ {{ prato.preco }}<br>
+                    <a href="{{ url_for('editar_prato', prato_id=prato._id) }}">Editar</a>
+                    <a href="{{ url_for('deletar_prato', prato_id=prato._id) }}">Deletar</a>
+                </li>
+            {% endfor %}
+        </ul>
+        <a href="{{ url_for('criar_prato', menu_id=menu._id) }}">
+            <button>Adicionar Novo Prato</button>
+        </a>
+    </div>
 </body>
 </html>

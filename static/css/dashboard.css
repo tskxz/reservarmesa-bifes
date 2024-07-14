@@ -1,0 +1,579 @@
+/* CSS DIVIDED FOR SIMPLICITY
+
+    1. Google Fonts
+    2. Var Color
+    3. IMG & Body
+    4. Containers
+    5. Navbar
+    6. Sections
+*/
+
+/* 1. Google Fonts */
+
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap');
+
+* {
+    font-family: 'Poppins', sans-serif;
+    margin: 0;
+    padding: 0;
+    scroll-padding-top: 1rem;
+    scroll-behavior: smooth;
+    list-style: none;
+    text-decoration: none;
+    box-sizing: border-box;
+}
+
+/* Hyperlinks */
+a {
+    color: var(--text-color);
+    text-decoration: none;
+}
+
+/* Var Color */
+:root {
+    --main-color: #336b31;
+    --text-color: #020102;
+    --bg-color: #fff;
+}
+
+/* Img and Body */
+img {
+    width: 100%;
+}
+
+body {
+    color: var(--text-color);
+    max-width: 1920px;
+}
+
+/* Container Css */
+.container {
+    max-width: 1068px;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+/* Navbar Css */
+.nav {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 20px 35px;
+}
+
+#menu-icon {
+    font-size: 24px;
+    cursor: pointer;
+    color: var(--text-color);
+    display: none;
+}
+
+.logo {
+    font-size: 1.4rem;
+    font-weight: 700;
+    color: var(--text-color);
+}
+
+.logo span {
+    color: var(--bg-color);
+}
+
+/* Section Main */
+main {
+    padding: 2rem 1.5rem;
+    background-color: #f1f5f0;
+    min-height: calc(100vh - 90px);
+}
+
+.sidebar {
+    width: 345px;
+    position: fixed;
+    height: 100%;
+    background-color: var(--main-color);
+    left: 0;
+    top: 0;
+}
+
+.sidebar-brand {
+    height: 90px;
+    padding: 1rem 0rem 1rem 2rem;
+}
+
+.sidebar-brand span {
+    display: inline-block;
+    padding-right: 1rem;
+}
+
+.sidebar-menu li {
+    width: 100%;
+    margin-bottom: 1rem;
+    padding-left: 1rem;
+}
+
+.sidebar-menu a {
+    padding-left: 1rem;
+    margin-bottom: 30px;
+    display: block;
+    font-size: 1.3rem;
+    color: var(--bg-color);
+}
+
+.sidebar-menu a.active {
+    background: #fff;
+    padding-top: 1rem;
+    padding-bottom: 1rem;
+    color: var(--main-color);
+    border-radius: 30px 0px 0px 30px;
+}
+
+.sidebar-menu i {
+    margin-right: 5px;
+}
+
+.main-content {
+    margin-left: 345px;
+}
+
+header {
+    display: flex;
+    justify-content: space-between;
+    padding: 1rem;
+    box-shadow: 2px 2px 5px rgba(0, 0, 0, 0.2);
+}
+
+.search-bar {
+    border: 1px solid #ccc;
+    border-radius: 30px;
+    height: 50px;
+    display: flex;
+    align-items: center;
+    overflow-x: hidden;
+}
+
+.search-bar i {
+    display: inline-block;
+    padding: 0rem 1rem;
+    font-size: 1.6rem;
+}
+
+.search-bar input {
+    height: 100%;
+    padding: 0.5rem;
+    border: none;
+    outline: none;
+}
+
+.user {
+    display: flex;
+    align-items: center;
+}
+
+.user img {
+    border-radius: 50%;
+    margin-right: 1rem;
+    max-width: 50px;
+    max-height: 50px;
+}
+
+.user h4 {
+    color: var(--text-color);
+}
+
+.user small {
+    display: inline-block;
+    color: #ccc;
+}
+
+.cards {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    grid-gap: 2rem;
+}
+
+.card-single {
+    display: flex;
+    justify-content: space-between;
+    background-color: #fff;
+    padding: 1rem;
+    border-radius: 10px;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+}
+
+.card-single i {
+    color: var(--main-color);
+}
+
+.card-single:last-child {
+    background-color: var(--main-color);
+}
+
+.card-single:last-child i {
+    color: var(--bg-color);
+}
+
+.card-single:last-child h1,
+.card-single:last-child span {
+    color: var(--bg-color)
+}
+
+.dashboard {
+    display: flex;
+    justify-content: space-between;
+    padding-top: 20px;
+}
+
+.recent-sales,
+.new-customer {
+    background: white;
+    border-radius: 8px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    padding: 20px;
+    width: 48%;
+}
+
+.header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 20px;
+}
+
+.header h2 {
+    margin: 0;
+}
+
+.see-all {
+    background: var(--main-color);
+    border: none;
+    color: white;
+    padding: 10px 20px;
+    border-radius: 20px;
+    cursor: pointer;
+    font-size: 16px;
+    transition: background-color 0.3s ease;
+}
+
+.see-all:hover {
+    background-color: #4CAF50;
+}
+
+table {
+    width: 100%;
+    border-collapse: collapse;
+}
+
+th, 
+td {
+    text-align: left;
+    padding: 8px;
+}
+
+th {
+    background: #9bf1a0;
+}
+
+tr:nth-child(even) {
+    background: #f9fafc;
+}
+
+.customer-list {
+    display: flex;
+    flex-direction: column;
+}
+
+.customer-item {
+    display: flex;
+    align-items: center;
+    padding: 10px 0;
+    border-bottom: 1px solid #f4f6f8;
+}
+
+.customer-item img {
+    border-radius: 50%;
+    width: 50px;
+    height: 50px;
+    margin-right: 20px;
+}
+
+.customer-info {
+    display: flex;
+    flex-direction: column;
+}
+
+.customer-info-icons {
+    display: flex;
+    gap: 8px;
+    margin-top: 8px;
+}
+
+.customer-info p {
+    margin: 0;
+    font-weight: bold;
+}
+
+.customer-info span {
+    color: #888;
+}
+
+.hidden {
+    display: none;
+}
+
+
+/* Reviews Section */
+
+.reviews {
+    display: flex;
+    justify-content: space-between;
+    padding-top: 20px;
+}
+
+.recent-reviews {
+    background: white;
+    border-radius: 8px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    padding: 20px;
+    width: 100%;
+}
+
+
+/* Stock Section */
+
+.stocks {
+    display: flex;
+    justify-content: space-between;
+    padding-top: 20px;
+}
+
+.stockpile {
+    background: white;
+    border-radius: 8px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    padding: 20px;
+    width: 100%;
+}
+
+
+/* Customer Support Section */
+
+.tickets {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 20px;
+}
+
+.ticket-item {
+    background-color: #ffffff;
+    border: 1px solid #e1e5eb;
+    border-radius: 8px;
+    padding: 20px;
+    width: calc(50% - 20px); 
+}
+
+.ticket-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 10px;
+}
+
+.ticket-header h3 {
+    margin: 0;
+}
+
+.ticket-status {
+    padding: 6px 12px;
+    background-color: #f0f4f9;
+    border-radius: 20px;
+    color: #596080;
+    font-size: 0.85rem;
+}
+
+.ticket-description {
+    color: #596080;
+}
+
+.ticket-footer {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-top: 10px;
+}
+
+.ticket-date {
+    color: #adb5bd;
+}
+
+.btn {
+    padding: 8px 16px;
+    background-color: #f0f4f9;
+    border: none;
+    border-radius: 20px;
+    color: #596080;
+    font-size: 0.85rem;
+    cursor: pointer;
+}
+
+.btn-secondary {
+    background-color: #ffffff;
+    border: 1px solid #adb5bd;
+    color: #596080;
+}
+
+/* Account Section */
+
+.accounts {
+    display: flex;
+    justify-content: space-between;
+    padding-top: 20px;
+}
+
+.account-overview {
+    background: white;
+    border-radius: 8px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    padding: 20px;
+    width: 100%;
+}
+
+.account-overview .header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 20px;
+}
+
+.account-overview .header h2 {
+    margin: 0;
+}
+
+.account-overview table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 15px;
+}
+
+.account-overview th,
+.account-overview td {
+    text-align: left;
+    padding: 12px;
+}
+
+.account-overview th {
+    background: #f4f6f8;
+}
+
+.account-overview tbody tr:nth-child(even) {
+    background: #f9fafc;
+}
+
+.account-overview .view-details {
+    background-color: #007bff;
+    color: white;
+    border: none;
+    padding: 8px 16px;
+    border-radius: 4px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+.account-overview .view-details:hover {
+    background-color: #0056b3;
+}
+
+
+/* Reserve Section */
+
+#reserve-section {
+    padding: 20px;
+}
+
+.reserved-cars,
+.reservation-requests {
+    background-color: #fff;
+    border-radius: 8px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    padding: 20px;
+    margin-bottom: 20px;
+}
+
+.header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 20px;
+}
+
+.header h2 {
+    margin: 0;
+}
+
+.car-list,
+.request-list {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+    gap: 20px;
+}
+
+.car-item,
+.request-item {
+    background: white;
+    border-radius: 8px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    padding: 20px;
+}
+
+.car-item img,
+.request-item img {
+    width: 100%;
+    border-radius: 8px;
+    margin-bottom: 10px;
+}
+
+.car-info h3,
+.request-info h3 {
+    margin: 0 0 10px 0;
+    font-size: 18px;
+}
+
+.\ar-info p,
+.request-info p {
+    margin: 0;
+    color: #666;
+    font-size: 14px;
+}
+
+.request-actions {
+    margin-top: 10px;
+}
+
+.approve-btn,
+.reject-btn,
+.pending-btn, 
+.approved-btn {
+    padding: 8px 16px;
+    margin-right: 10px;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+}
+
+.approve-btn {
+    background-color: #4CAF50;
+    color: white;
+}
+
+.reject-btn {
+    background-color: #d90429;
+    color: white;
+}
+
+.pending-btn {
+    background-color: #f0ad4e;
+    color: white;
+}
+
+.approved-btn {
+    background-color: #ccc;
+    color: white;
+}

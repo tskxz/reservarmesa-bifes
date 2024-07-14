@@ -3,11 +3,74 @@
 <head>
     <meta charset="UTF-8">
     <title>Fazer Reserva</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f4f9;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+        h1 {
+            color: #333;
+        }
+        form {
+            background: #fff;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            max-width: 600px;
+            width: 100%;
+            margin: 20px 0;
+        }
+        label {
+            display: block;
+            margin: 10px 0 5px;
+            font-weight: bold;
+        }
+        input, select {
+            width: 100%;
+            padding: 10px;
+            margin-bottom: 10px;
+            border-radius: 4px;
+            border: 1px solid #ccc;
+        }
+        button {
+            background-color: #007bff;
+            color: white;
+            padding: 10px 15px;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            transition: background-color 0.3s;
+        }
+        button:hover {
+            background-color: #0056b3;
+        }
+        .menu {
+            background: #f9f9f9;
+            padding: 10px;
+            border-radius: 4px;
+            margin-bottom: 10px;
+        }
+        .menu h3 {
+            margin-top: 0;
+        }
+        ul {
+            list-style-type: none;
+            padding: 0;
+        }
+        ul li {
+            margin-bottom: 5px;
+        }
+    </style>
 </head>
 <body>
     <h1>Fazer Reserva</h1>
     {% for message in get_flashed_messages() %}
-        {{ message }}
+        <div class="flash-message">{{ message }}</div>
     {% endfor %}
     <form method="post" action="{{ url_for('reservar_page') }}">
         <label for="mesa_id">Mesa:</label>
@@ -16,27 +79,25 @@
             <option value="{{ mesa._id }}">{{ mesa.identificacao }} - {{ mesa.quantidade_pessoas }} pessoas</option>
             {% endfor %}
         </select>
-        <br>
         <label for="data_hora">Data e Hora:</label>
         <input type="datetime-local" id="data_hora" name="data_hora" required>
-        <br>
-
         <h2>Escolha os Pratos:</h2>
         {% for menu in menus %}
-        <h3>{{ menu.nome }}</h3>
-        <ul>
-            {% for prato in pratos %}
-            {% if prato.menu_id == menu._id %}
-            <li>
-                <input type="checkbox" id="prato_{{ prato._id }}" name="prato_id" value="{{ prato._id }}">
-                <label for="prato_{{ prato._id }}">{{ prato.nome }} - {{ prato.descricao }} - Preço: {{ prato.preco }}</label>
-                <input type="number" id="quantidade_{{ prato._id }}" name="quantidade_{{ prato._id }}" min="1" value="1" required>
-            </li>
-            {% endif %}
-            {% endfor %}
-        </ul>
+        <div class="menu">
+            <h3>{{ menu.nome }}</h3>
+            <ul>
+                {% for prato in pratos %}
+                {% if prato.menu_id == menu._id %}
+                <li>
+                    <input type="checkbox" id="prato_{{ prato._id }}" name="prato_id" value="{{ prato._id }}">
+                    <label for="prato_{{ prato._id }}">{{ prato.nome }} - {{ prato.descricao }} - Preço: {{ prato.preco }}</label>
+                    <input type="number" id="quantidade_{{ prato._id }}" name="quantidade_{{ prato._id }}" min="1" value="1" required>
+                </li>
+                {% endif %}
+                {% endfor %}
+            </ul>
+        </div>
         {% endfor %}
-
         <button type="submit">Reservar</button>
     </form>
 </body>

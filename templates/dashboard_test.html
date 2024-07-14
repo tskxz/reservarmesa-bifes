@@ -1,0 +1,504 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css">
+    <link rel="stylesheet" href="/static/css/dashboard.css">
+    <link href="https://unpkg.com/boxicons@2.0.9/css/boxicons.min.css" rel="stylesheet">
+    <title>Dashboard</title>
+</head>
+
+<body>
+        <div class="sidebar">
+        <div class="sidebar-brand">
+            <a href="/" class="logo">Restaurante<span>Bifes</span></a>
+        </div>
+        <div class="sidebar-menu">
+            <ul>
+                <li>
+                    <a href="#" class="active" id="dashboard"><i class='bx bx-clipboard'></i><span>Dashboard</span></a>
+                </li>  
+            <li>
+                <a href="#" class="" id="accounts"><i class='bx bxs-user-account'></i><span>Clientes</span></a>
+            </li>
+            <li>
+                <a href="#" class="" id="accounts"><i class='bx bxs-user-account'></i><span>Funcionarios</span></a>
+            </li>
+            <li>
+                <a href="#" class="" id="reserve"><i class='bx bxs-calendar'></i></i><span>Mesas</span></a>
+            </li>
+            <li>
+                <a href="#" class="" id="reviews"><i class='bx bxs-comment-detail'></i><span>Menus</span></a>
+            </li>
+            <li>
+                <a href="#" class="" id="reviews"><i class='bx bxs-comment-detail'></i><span>Reservas</span></a>
+            </li>
+
+            </li> 
+               
+            </ul>
+        </div>
+    </div>
+
+         <div class="main-content">
+            <header>
+            <h1>
+                <i class='bx bx-menu'></i>
+                Dashboard
+            </h1>
+
+            <div class="search-bar">
+                <i class='bx bx-search-alt-2'></i>
+                <input type="search" placeholder="Search Bar">
+            </div>
+
+            <div class="user">
+                <img src="/uploads/">
+                <div>
+                    <h4></h4>
+                    <small>Admin</small>
+                </div>
+            </div>
+        </header>
+
+            <main id="dashboard-section">
+            <div class="cards">
+                <div class="card-single">
+                    <div>
+                        <h1>0</h1>
+                        <span>Clientes</span>
+                    </div>
+                    <div>
+                        <i class='bx bxs-user bx-lg'></i>
+                    </div>
+                </div>
+
+                <div class="card-single">
+                    <div>
+                        <h1>0</h1>
+                        <span>Contactos</span>
+                    </div>
+                    <div>
+                        <i class='bx bxs-comment-detail bx-lg'></i>
+                    </div>
+                </div>
+
+                <div class="card-single">
+                    <div>
+                        <h1>0</h1>
+                        <span>Marcações de Serviço</span>
+                    </div>
+                    <div>
+                        <i class='bx bx-store bx-lg'></i>
+                    </div>
+                </div>
+            </div>
+
+            <div class="dashboard">
+                <div class="recent-sales">
+                    <div class="header">
+                        <h2>Serviços Recentes</h2>
+                        <button class="see-all">Ver Tudo →</button>
+                    </div>
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>Serviço</th>
+                                <th>Data</th>
+                                <th>Cliente</th>    
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td>Toyota</td>
+                                <td>Corolla</td>
+                                <td>David Goggins</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+                <div class="new-customer">
+                    <div class="header">
+                        <h2>Novos Clientes</h2>
+                        <button class="see-all">Ver Tudo →</button>
+                    </div>
+                    <div class="customer-list">
+                        <div class="customer-item">
+                            <img src="customer.jpg" alt="Customer">
+                            <div class="customer-info">
+                                <p>David Goggins</p>
+                                <span>Contacts</span>
+                                <div class="customer-info-icons">
+                                    <i class='bx bx-face'></i>
+                                    <i class='bx bx-user'></i>
+                                    <i class='bx bx-phone'></i>
+                                </div>
+                            </div>
+                        </div>
+                       
+                    </div>
+                </div>
+            </div>
+        </main>
+
+        <main id="reserve-section" class="hidden">
+            <section class="reserved-cars">
+                <div class="header">
+                    <h2>Reserved Cars</h2>
+                    <button class="see-all">Ver Tudo →</button>
+                </div>
+                <div class="car-list">
+                    <div class="car-item">
+                        <img src="car1.jpg" alt="Car 1">
+                        <div class="car-info">
+                            <h3>Toyota Corolla</h3>
+                            <p>Reserved by: David Goggins</p>
+                            <p>Reservation Date: 2023-06-15</p>
+                        </div>
+                    </div>
+                    <div class="car-item">
+                        <img src="car2.jpg" alt="Car 2">
+                        <div class="car-info">
+                            <h3>Honda Civic</h3>
+                            <p>Reserved by: Sarah Johnson</p>
+                            <p>Reservation Date: 2023-06-14</p>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <section class="reservation-requests">
+                <div class="header">
+                    <h2>Reservation Requests</h2>
+                    <button class="see-all">See all →</button>
+                </div>
+                <div class="request-list">
+                    <div class="request-item">
+                        <img src="car3.jpg" alt="Car 3">
+                        <div class="request-info">
+                            <h3>Ford Focus</h3>
+                            <p>Requested by: Michael Smith</p>
+                            <p>Request Date: 2023-06-16</p>
+                            <div class="request-actions">
+                                <button class="approve-btn">Approve</button>
+                                <button class="reject-btn">Reject</button>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="request-item">
+                        <img src="car4.jpg" alt="Car 4">
+                        <div class="request-info">
+                            <h3>Chevrolet Malibu</h3>
+                            <p>Requested by: Emily Davis</p>
+                            <p>Request Date: 2023-06-15</p>
+                            <div class="request-actions">
+                                <button class="approve-btn">Approve</button>
+                                <button class="reject-btn">Reject</button>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="request-item">
+                        <img src="car4.jpg" alt="Car 4">
+                        <div class="request-info">
+                            <h3>Chevrolet Malibu</h3>
+                            <p>Requested by: Emily Davis</p>
+                            <p>Request Date: 2023-06-15</p>
+                            <div class="request-actions">
+                                <button class="pending-btn">Pending</button>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="request-item">
+                        <img src="car5.jpg" alt="Car 5">
+                        <div class="request-info">
+                            <h3>BMW 3 Series</h3>
+                            <p>Requested by: John Doe</p>
+                            <p>Request Date: 2023-06-14</p>
+                            <div class="request-actions">
+                                <button class="approved-btn">Approved</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+        </main>
+
+        <main id="customer-support-section" class="hidden">
+            <div class="tickets">
+                <div class="ticket-item">
+                    <div class="ticket-header">
+                        <h3>Issue with Payment</h3>
+                        <span class="ticket-status">Open</span>
+                    </div>
+                    <p class="ticket-description">Customer is unable to complete payment process.</p>
+                    <div class="ticket-footer">
+                        <span class="ticket-customer">
+                            <i class="bx bx-user"></i> Customer ID:
+                        </span>
+                        <span class="ticket-contact">
+                            <a href=""><i class="bx bx-phone"></i></a>
+                        </span>
+                    </div>
+                </div>
+
+                <div class="ticket-item">
+                    <div class="ticket-header">
+                        <h3>Technical Support Needed</h3>
+                        <span class="ticket-status">Pending</span>
+                    </div>
+                    <p class="ticket-description">Customer reports issues with car navigation system.</p>
+                    <div class="ticket-footer">
+                        <span class="ticket-customer">
+                            <i class="bx bx-user"></i> Customer ID:
+                        </span>
+                        <span class="ticket-contact">
+                            <a href=""><i class="bx bx-phone"></i></a>
+                        </span>
+                    </div>
+                </div>
+            </div>
+        </main>
+
+        <main id="reviews-section" class="hidden">
+            <div class="reviews">
+                <div class="recent-reviews">
+                    <div class="header">
+                        <h2>Recent Reviews</h2>
+                        <button class="see-all">See all →</button>
+                    </div>
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Customer</th>
+                            <th>Date</th>
+                            <th>Car Used</th>
+                            <th>Message</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>John Doe</td>
+                            <td>2024-06-01</td>
+                            <td>BMW 3 Series</td>
+                            <td>Great car, powerful engine!</td>
+                        </tr>
+                        <tr>
+                            <td>Sarah Johnson</td>
+                            <td>2024-05-28</td>
+                            <td>Honda Civic</td>
+                            <td>Smooth ride, excellent fuel efficiency.</td>
+                        </tr>
+                        <tr>
+                            <td>Michael Smith</td>
+                            <td>2024-05-15</td>
+                            <td>Ford Focus</td>
+                            <td>Comfortable interior, good handling.</td>
+                        </tr>
+                        <tr>
+                            <td>Emily Davis</td>
+                            <td>2024-05-10</td>
+                            <td>Chevrolet Malibu</td>
+                            <td>Spacious and stylish, love the design.</td>
+                        </tr>
+                        <tr>
+                            <td>David Goggins</td>
+                            <td>2024-04-30</td>
+                            <td>Toyota Corolla</td>
+                            <td>Reliable and affordable.</td>
+                        </tr>
+                        <tr>
+                            <td>John Doe</td>
+                            <td>2024-04-20</td>
+                            <td>BMW 3 Series</td>
+                            <td>Great car, powerful engine!</td>
+                        </tr>
+                        <tr>
+                            <td>Sarah Johnson</td>
+                            <td>2024-04-15</td>
+                            <td>Honda Civic</td>
+                            <td>Smooth ride, excellent fuel efficiency.</td>
+                        </tr>
+                        <tr>
+                            <td>Michael Smith</td>
+                            <td>2024-03-28</td>
+                            <td>Ford Focus</td>
+                            <td>Comfortable interior, good handling.</td>
+                        </tr>
+                        <tr>
+                            <td>Emily Davis</td>
+                            <td>2024-03-25</td>
+                            <td>Chevrolet Malibu</td>
+                            <td>Spacious and stylish, love the design.</td>
+                        </tr>
+                        <tr>
+                            <td>David Goggins</td>
+                            <td>2024-03-20</td>
+                            <td>Toyota Corolla</td>
+                            <td>Reliable and affordable.</td>
+                        </tr>
+                    </tbody>
+                </table>
+                </div>
+        </main>
+
+        <main id="stock-section" class="hidden">     
+        <div class="stocks">
+            <div class="stockpile">
+                <div class="header">
+                    <h2>Stock Overview</h2>
+                    <button class="see-all">See all →</button>
+                </div>
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Car Brand</th>
+                            <th>Model</th>
+                            <th>Year</th>
+                            <th>Price per Unit</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        
+                        <tr>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                        </tr>
+                       
+                    </tbody>
+                </table>
+            </div>
+        </div>
+        </main>
+
+        <main id="accounts-section" class="hidden">
+            <div class="accounts">
+                <div class="account-overview">
+                    <div class="header">
+                        <h2>Account Overview</h2>
+                        <button class="see-all" onclick="redirectToNewPage()">See all →</button>
+                    </div>
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>Customer ID</th>
+                                <th>Name</th>
+                                <th>Email</th>
+                                <th>Action</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            
+                            
+                            <tr>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                                <td><button class="view-details" onclick="redirectToDetailsPage('001')">View Details</button></td>
+                            </tr>
+                           
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </main>
+        
+        <main id="accounts-section" class="hidden">
+            <div class="accounts">
+                <div class="account-overview">
+                    <div class="header">
+                        <h2>Account Overview</h2>
+                        <button class="see-all" onclick="redirectToNewPage()">See all →</button>
+                    </div>
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>Customer ID</th>
+                                <th>Name</th>
+                                <th>Email</th>
+                                <th>Action</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td>001</td>
+                                <td>John Doe</td>
+                                <td>johndoe@example.com</td>
+                                <td><button class="view-details" onclick="redirectToDetailsPage('001')">View Details</button></td>
+                            </tr>
+                            <tr>
+                                <td>002</td>
+                                <td>Sarah Johnson</td>
+                                <td>sarah.j@example.com</td>
+                                <td><button class="view-details" onclick="redirectToDetailsPage('002')">View Details</button></td>
+                            </tr>
+                            <tr>
+                                <td>003</td>
+                                <td>Michael Smith</td>
+                                <td>m.smith@example.com</td>
+                                <td><button class="view-details" onclick="redirectToDetailsPage('003')">View Details</button></td>
+                            </tr>
+                            <tr>
+                                <td>004</td>
+                                <td>Emily Davis</td>
+                                <td>emily.d@example.com</td>
+                                <td><button class="view-details" onclick="redirectToDetailsPage('004')">View Details</button></td>
+                            </tr>
+                            <tr>
+                                <td>005</td>
+                                <td>David Goggins</td>
+                                <td>david.g@example.com</td>
+                                <td><button class="view-details" onclick="redirectToDetailsPage('005')">View Details</button></td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </main>
+
+        <main id="settings-section" class="hidden">
+            <h2>Settings Section</h2>
+        </main>
+
+    </div>
+
+    <script>
+        document.addEventListener("DOMContentLoaded", function () {
+            const sidebarLinks = document.querySelectorAll('.sidebar-menu a');
+            const mainContentSections = document.querySelectorAll('.main-content > main');
+
+            sidebarLinks.forEach(link => {
+                link.addEventListener('click', function (event) {
+                    event.preventDefault();
+
+                    // Remove active class from all links
+                    sidebarLinks.forEach(link => link.classList.remove('active'));
+
+                    // Add active class to the clicked link
+                    this.classList.add('active');
+
+                    // Hide all sections
+                    mainContentSections.forEach(section => section.classList.add('hidden'));
+
+                    // Get the target ID from the clicked link
+                    const targetId = this.getAttribute('id') + '-section';
+
+                    // Section Select
+                    const targetSection = document.querySelector(`#${targetId}`);
+                    if (targetSection) {
+                        targetSection.classList.remove('hidden');
+                    }
+                });
+            });
+
+            // Shows dashboard as initial active
+            document.querySelector('#dashboard').classList.add('active');
+            document.querySelector('#dashboard-section').classList.remove('hidden');
+        });
+    </script>
+</body>
+
+</html>

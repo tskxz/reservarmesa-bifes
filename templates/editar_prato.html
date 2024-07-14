@@ -3,22 +3,90 @@
 <head>
     <meta charset="UTF-8">
     <title>Editar Prato</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f4f9;
+            margin: 0;
+            padding: 20px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+        }
+        .container {
+            background-color: #ffffff;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            width: 400px;
+            text-align: center;
+        }
+        h1 {
+            color: #333333;
+            margin-bottom: 20px;
+        }
+        form {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+        label {
+            width: 100%;
+            margin-top: 10px;
+            font-weight: bold;
+            text-align: left;
+        }
+        input[type="text"], input[type="number"], textarea {
+            width: 100%;
+            padding: 8px;
+            margin-top: 5px;
+            margin-bottom: 10px;
+            border: 1px solid #cccccc;
+            border-radius: 4px;
+            box-sizing: border-box;
+        }
+        button {
+            background-color: #4CAF50;
+            color: white;
+            padding: 10px 15px;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 16px;
+            width: 100%;
+            margin-top: 10px;
+        }
+        button:hover {
+            background-color: #45a049;
+        }
+        a {
+            display: block;
+            margin-top: 15px;
+            text-decoration: none;
+            color: #007BFF;
+        }
+        a:hover {
+            text-decoration: underline;
+        }
+    </style>
 </head>
 <body>
-    <h1>Editar Prato: {{ prato.nome }}</h1>
-    <a href="{{ url_for('listar_menus') }}">Voltar para Lista de Menus</a>
-    <br><br>
-    <form action="{{ url_for('editar_prato', prato_id=prato._id) }}" method="POST">
-        <label for="nome">Nome do Prato:</label><br>
-        <input type="text" id="nome" name="nome" value="{{ prato.nome }}" required><br><br>
+    <div class="container">
+        <h1>Editar Prato: {{ prato.nome }}</h1>
+        <a href="{{ url_for('listar_menus') }}">Voltar para Lista de Menus</a>
+        <form action="{{ url_for('editar_prato', prato_id=prato._id) }}" method="POST">
+            <label for="nome">Nome do Prato:</label>
+            <input type="text" id="nome" name="nome" value="{{ prato.nome }}" required>
 
-        <label for="descricao">Descrição:</label><br>
-        <textarea id="descricao" name="descricao" rows="4" cols="50" required>{{ prato.descricao }}</textarea><br><br>
+            <label for="descricao">Descrição:</label>
+            <textarea id="descricao" name="descricao" rows="4" required>{{ prato.descricao }}</textarea>
 
-        <label for="preco">Preço:</label><br>
-        <input type="number" id="preco" name="preco" step="0.01" value="{{ prato.preco }}" required><br><br>
+            <label for="preco">Preço:</label>
+            <input type="number" id="preco" name="preco" step="0.01" value="{{ prato.preco }}" required>
 
-        <button type="submit">Atualizar Prato</button>
-    </form>
+            <button type="submit">Atualizar Prato</button>
+        </form>
+    </div>
 </body>
 </html>

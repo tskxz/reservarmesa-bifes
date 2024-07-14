@@ -5,7 +5,7 @@ from werkzeug.security import generate_password_hash, check_password_hash
 from bson.objectid import ObjectId
 from datetime import datetime
 
-app = Flask(__name__)
+app = Flask(__name__, static_url_path='/static', static_folder='static')
 app.config["SECRET_KEY"] = "sh!"
 app.config["MONGO_URI"] = "mongodb://localhost:27017/reservetablebifes"
 mongo = PyMongo(app)
@@ -43,6 +43,47 @@ def register_page():
         return redirect(url_for('login_page'))
     return render_template('register.html')
 
+@app.route('/dashboard_test')
+def dashboard_test():
+    return render_template('dashboard_test.html')
+@app.route('/login_test')
+def login_test():
+    return render_template('login_test.html')
+
+@app.route('/dashboard_funcionarios')
+def dashboard_funcionarios():
+    funcionarios = mongo.db.funcionarios.find()
+    return render_template('dashboard_funcionarios.html', funcionarios=funcionarios)
+
+@app.route('/dashboard_menus')
+def dashboard_menus():
+    menus = mongo.db.menus.find()
+    return render_template('dashboard_menus.html', menus=menus)
+
+@app.route('/dashboard_reservas')
+def dashboard_reservas():
+    reservas = mongo.db.reservas.find()
+    users = mongo.db.users.find()
+    mesas = mongo.db.mesas.find()
+    pratos = mongo.db.pratos.find()
+
+    users_map = {user['_id']: {'username': user['username'], 'telemovel': user['telemovel']} for user in users}
+    mesas_map = {mesa['_id']: {'identificacao': mesa['identificacao'], 'quantidade_pessoas': mesa['quantidade_pessoas']} for mesa in mesas}
+    pratos_map = {str(prato['_id']): {'nome': prato['nome'], 'descricao': prato['descricao'], 'preco': prato['preco']} for prato in pratos}
+    
+    reservas_pendentes = mongo.db.reservas.find({"aceitado": False})
+    reservas_aceites = mongo.db.reservas.find({"aceitado": True})
+    return render_template('dashboard_reservas.html', reservas=reservas, users=users, users_map=users_map, mesas_map=mesas_map, pratos_map=pratos_map, reservas_pendentes=reservas_pendentes, reservas_aceites=reservas_aceites, str=str)
+
+@app.route('/dashboard_mesas')
+def dashboard_mesas():
+    mesas = mongo.db.mesas.find()
+    funcionarios = mongo.db.funcionarios.find()
+
+    # Criar um dicionário para mapear o _id do funcionário para o nome
+    funcionarios_map = {funcionario['_id']: funcionario['nome'] for funcionario in funcionarios}
+
+    return render_template('dashboard_mesas.html', mesas=mesas, funcionarios_map=funcionarios_map)
 @app.route('/login', methods=['GET', 'POST'])
 def login_page():
     if request.method == 'POST':
@@ -80,7 +121,22 @@ def dashboard_page():
     if current_user.role != 'admin':
         flash('Acesso negado. Apenas administradores podem acessar esta página.')
         return redirect(url_for('protected_page'))
-    return render_template('dashboard.html')
+    
+    reservas = mongo.db.reservas.find()
+    users = mongo.db.users.find()
+    mesas = mongo.db.mesas.find()
+    pratos = mongo.db.pratos.find()
+
+    quantidade_users = mongo.db.users.count_documents({})
+    users_map = {user['_id']: {'username': user['username'], 'telemovel': user['telemovel']} for user in users}
+    mesas_map = {mesa['_id']: {'identificacao': mesa['identificacao'], 'quantidade_pessoas': mesa['quantidade_pessoas']} for mesa in mesas}
+    pratos_map = {str(prato['_id']): {'nome': prato['nome'], 'descricao': prato['descricao'], 'preco': prato['preco']} for prato in pratos}
+    
+    reservas_pendentes = mongo.db.reservas.find({"aceitado": False})
+    quantidade_reservas_pendentes = mongo.db.reservas.count_documents({"aceitado": False})
+    reservas_aceites = mongo.db.reservas.find({"aceitado": True})
+
+    return render_template('dashboard.html', quantidade_reservas_pendentes=quantidade_reservas_pendentes, reservas_pendentes=reservas_pendentes, users_map=users_map, mesas_map=mesas_map, pratos_map=pratos_map, quantidade_users=quantidade_users)
 
 @app.route('/reservar', methods=['GET', 'POST'])
 @login_required
@@ -119,11 +175,19 @@ def reservar_page():
         return redirect(url_for('protected_page'))
 
     mesas = mongo.db.mesas.find({"reservado": False})
-    menus = mongo.db.menus.find()
-    pratos = mongo.db.pratos.find()
+    menus = list(mongo.db.menus.find())
+    pratos = list(mongo.db.pratos.find())
 
     return render_template('reservar.html', mesas=mesas, menus=menus, pratos=pratos)
 
+@app.route('/funcionarios/criar')
+@login_required
+def criar_funcionario():
+    if current_user.role != 'admin':
+        flash('Acesso negado. Apenas administradores podem acessar esta página.')
+        return redirect(url_for('protected_page'))
+
+    return render_template('criar_funcionario.html')
 
 @app.route('/funcionarios')
 @login_required
@@ -134,7 +198,6 @@ def funcionarios_page():
 
     funcionarios = mongo.db.funcionarios.find()
     return render_template('funcionarios.html', funcionarios=funcionarios)
-
 @app.route('/adicionar_funcionario', methods=['POST'])
 @login_required
 def adicionar_funcionario():
@@ -336,7 +399,7 @@ def editar_menu(menu_id):
             }}
         )
         flash('Menu atualizado com sucesso.')
-        return redirect(url_for('listar_menus'))
+        return redirect(url_for('dashboard_menus'))
 
     return render_template('editar_menu.html', menu=menu)
 
