@@ -83,7 +83,6 @@
                 <div class="recent-sales">
                     <div class="header">
                         <h2>Reservas em pendente</h2>
-                        <button class="see-all">Ver Tudo →</button>
                     </div>
                     <table>
                         <thead>
@@ -162,7 +161,6 @@
             <section class="reserved-cars">
                 <div class="header">
                     <h2>Mesas Reservadas</h2>
-                    <button class="see-all">Ver Tudo →</button>
                 </div>
                 <div class="car-list">
                     {% for reserva in reservas_aceites %}
@@ -190,7 +188,6 @@
             <section class="reservation-requests">
                 <div class="header">
                     <h2>Mesas Pendentes</h2>
-                    <a href="{{ url_for('criar_mesa') }}"></a> <button class="see-all">Criar mesa →</button>
                 </div>
                 <div class="request-list">
                     {% for reserva in reservas_pendentes %}
